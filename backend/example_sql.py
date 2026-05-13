@@ -8,21 +8,21 @@ import time
 import random
 import sqlite3 # SQL
 
-sqliteConnection = sqlite3.connect('test_table.db') # create / access sql database from filename
+sqliteConnection = sqlite3.connect('example_table.db') # create / access sql database from filename
 cursor = sqliteConnection.cursor() # create a "cursor" which allows you to interact with the sql database
 # cursor.execute("...") to execute sql commands, where ... is a sql command
 # cursor.commit() to save changes to the SQL database
 # cursor.fetchall() to receive data from a query, data is stored as list of lists
 
 # Delete SQL table
-sql_delete_table = """DROP TABLE IF EXISTS sql_test"""
+sql_delete_table = """DROP TABLE IF EXISTS sql_example"""
 print("Deleting table...")
 cursor.execute(sql_delete_table)
 
 
 # Create SQL table
 sql_create_table = """
-CREATE TABLE IF NOT EXISTS sql_test ( 
+CREATE TABLE IF NOT EXISTS sql_example ( 
     id INTEGER PRIMARY KEY, 
     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
     rpm REAL,
@@ -41,7 +41,7 @@ rpm = random.randint(0,500)
 while (end_time - start_time < 15):
     # Insert reading into SQL Database
     sql_insert = f"""
-    INSERT INTO sql_test (rpm, status)
+    INSERT INTO sql_example (rpm, status)
     VALUES ({rpm}, "Running")
     """
 
