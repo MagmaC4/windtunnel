@@ -1,3 +1,9 @@
+"""
+This script creates an example SQL database that stores wind tunnel motor rpm sensor data.
+It runs for 15 seconds and creates one entry every second.
+"""
+
+
 import time 
 import random
 import sqlite3 # SQL
@@ -10,8 +16,9 @@ cursor = sqliteConnection.cursor() # create a "cursor" which allows you to inter
 
 # Delete SQL table
 sql_delete_table = """DROP TABLE IF EXISTS sql_test"""
-cursor.execute(sql_delete_table)
 print("Deleting table...")
+cursor.execute(sql_delete_table)
+
 
 # Create SQL table
 sql_create_table = """
@@ -22,8 +29,9 @@ CREATE TABLE IF NOT EXISTS sql_test (
     status TEXT
 );
 """
-cursor.execute(sql_create_table)
 print("Creating table...")
+cursor.execute(sql_create_table)
+
 
 # Main loop to insert measurements 
 start_time = time.perf_counter()
@@ -37,8 +45,8 @@ while (end_time - start_time < 15):
     VALUES ({rpm}, "Running")
     """
 
-    cursor.execute(sql_insert)
     print("Inserting into table...")
+    cursor.execute(sql_insert)
     time.sleep(1) # delay program 1 second
 
     rpm = random.randint(0,500) # generate new rpm 
@@ -46,6 +54,6 @@ while (end_time - start_time < 15):
 
 
 # Cleanup
-sqliteConnection.commit() # save changes to database
 print("Commiting changes to SQL database...")
+sqliteConnection.commit() # save changes to database
 sqliteConnection.close() # close connection on termination
