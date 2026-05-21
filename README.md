@@ -13,9 +13,12 @@
 # Documentation
 
 - [Arduino Docs](https://docs.arduino.cc/language-reference/en/functions/digital-io/digitalread/)
+- [LidarLite Library](https://github.com/garmin/LIDARLite_Arduino_Library)
 - [pySerial Docs](https://pythonhosted.org/pyserial/index.html)
 - [Arduino >> pySerial Tutorial](https://projecthub.arduino.cc/ansh2919/serial-communication-between-python-and-arduino-663756)
-- [LidarLite Library](https://github.com/garmin/LIDARLite_Arduino_Library)
+- [SQLite Tutorial](https://www.geeksforgeeks.org/python/sql-using-python/)
+- [Next.js Documentation](https://nextjs.org/docs/app/getting-started)
+
 
 # Developer Environment Breadcrumbs
 
