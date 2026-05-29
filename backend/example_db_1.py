@@ -1,3 +1,6 @@
+# Database Attempt 1
+# pySerial I/O with Arduino Serial Monitor
+
 """
 This script is to test using input / output from an arduino serial channel. 
 Communication with an arduino requires the arudino port to be open on '/dev/cu.usbmodem101'.
@@ -7,6 +10,7 @@ The number is sent to the arduino's serial channel
 The arduino returns the number + 1
 
 """
+
 
 import serial 
 import time 

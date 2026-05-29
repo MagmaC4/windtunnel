@@ -1,5 +1,11 @@
 # Windtunnel Aerospace Engineering and Mechanics Project
 
+## How to run
+Navigate to Next.js folder  
+```cd frontend/windtunnel-site```  
+Start local server and client  
+```npm run dev```  
+
 ## Project workflow
 
 1. Arduino sends a sensor measurement every 60 seconds

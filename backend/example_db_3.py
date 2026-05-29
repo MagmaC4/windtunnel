@@ -1,3 +1,6 @@
+# Database Attempt 3
+# Create SQL database, insert numbers from Arduino Serial output
+
 """
 This script creates an example SQL database that stores wind tunnel motor rpm sensor data.
 It runs for 15 seconds and creates one entry every second.
