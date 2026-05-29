@@ -1,13 +1,13 @@
 import Database from "better-sqlite3";
 
 // The purpose of this file is to retrieve the average RPM query from the database.
-// This is the backend api that will run on the raspberry pi
+// This is the backend api that will run on the raspberry
 // SQL requests are error prone, so error catching is important.
 
 export async function GET() {
   try {
     // Access local database
-    const db = new Database("windtunnel_sensors.db");
+    const db = new Database("../../backend/windtunnel_sensors.db");
 
     // Store data in a variable
     const average_rpm = db
