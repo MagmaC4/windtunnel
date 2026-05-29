@@ -1,7 +1,8 @@
 import Database from "better-sqlite3";
 
 // The purpose of this file is to retrieve the average RPM query from the database.
-// SQL requests are dataprone, so error catching is important.
+// This is the backend api that will run on the raspberry pi
+// SQL requests are error prone, so error catching is important.
 
 export async function GET() {
   try {
