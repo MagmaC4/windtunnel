@@ -13,8 +13,7 @@ export async function GET() {
     const average_rpm = db
       .prepare("SELECT AVG(rpm) as average FROM motor_rpm") // prompt database with SQL query
       .get();                                               // receieve data 
-    db.close();
-    
+
     // Return data as a JSON
     // Error checking...
     // (average_rpm?.average) only returns if average_rpm is not null
