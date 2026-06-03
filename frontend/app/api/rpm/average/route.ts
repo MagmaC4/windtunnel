@@ -7,12 +7,16 @@ import Database from "better-sqlite3";
 export async function GET() {
   try {
     // Access local database
-    const db = new Database("../../backend/windtunnel_sensors.db");
+    const db = new Database("../backend/windtunnel_sensors.db");
 
     // Store data in a variable
+    type AverageRow = { 
+         average: number | null;
+    }; 
+
     const average_rpm = db
       .prepare("SELECT AVG(rpm) as average FROM motor_rpm") // prompt database with SQL query
-      .get();                                               // receieve data 
+      .get() as AverageRow;                                               // receieve data 
 
     // Return data as a JSON
     // Error checking...

@@ -6,12 +6,15 @@ import Database from "better-sqlite3";
 export async function GET() {
   try {
     // Access local database
-    const db = new Database("../../backend/windtunnel_sensors.db");
+    const db = new Database("../backend/windtunnel_sensors.db");
 
+    type LatestRPM = {
+	rpm: number;
+    };
 
     const latest_rpm = db
       .prepare("SELECT rpm FROM motor_rpm ORDER BY timestamp DESC LIMIT 1") 
-      .get(); 
+      .get() as LatestRPM | undefined; 
     db.close();
     
     // Return data as a JSON
