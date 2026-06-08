@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     const fetchRpm = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/rpm/latest");
+        const res = await fetch("/api/rpm/latest");
         const json = await res.json();
         setData(json);
         setLoading(false);
