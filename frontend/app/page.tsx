@@ -25,7 +25,7 @@ export default function Home() {
     return () => clearInterval(interval); // cleanup on unmount
   }, []);
 
-  const rpmValue = Number(data?.rpm);
+  const rpmValue = Number(data?.latest);
   const display = Number.isFinite(rpmValue) ? Math.round(rpmValue) : "—";
 
   return (
