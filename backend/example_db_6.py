@@ -6,12 +6,12 @@ from dotenv import load_dotenv  # .env
 import psycopg2                 # PostgreSQL
 import serial                   # Arduino
 import time 
+import sys                      # exit early
 
 # ==============================================================================
 # Helper Functions
 def read_rpm():
     arduino.reset_input_buffer()  # discard old serial data
-    time.sleep(1) # give arduino time to generate new rpm
 
     # Receive data from arudino's serial buffer
     data = arduino.readline().decode('utf-8').strip() 
@@ -21,7 +21,8 @@ def read_rpm():
         raise Exception("No data retrieved from Arduino")
 
     try: 
-        rpm = float(data)
+        rpm = int(data)
+        print(f"I GOT {rpm}")
     except ValueError:
         raise ValueError(f"Expected number from Arduino, got: {data}")
 
@@ -38,8 +39,6 @@ def insert_db(rpm):
 
     print(f"Inserting {rpm} into table...")
     cursor.execute(sql_insert, (rpm, status)) # execute insert command
-
-    print("Commiting changes to SQL database")
     connection.commit() # save changes to database
 
 # ==============================================================================
@@ -50,6 +49,7 @@ try:
         raise Exception("Failed to load .env file")
 
     # Connect to existing database
+    print("Connecting to PostgreSQL database...")
     connection = psycopg2.connect(
         host=os.getenv("DB_HOST"),
         dbname=os.getenv("DB_NAME"),
@@ -69,8 +69,9 @@ except Exception as error:
 # Setup Arduino connection
 # ATTENTION, port is very likely to change occasionally 
 try: 
-    arduino = serial.Serial(port='/dev/cu.usbmodem1101', baudrate=115200, timeout=.1)
-    time.sleep(2)  # Arduino reset delay
+    print("Connecting to Arduino...")
+    arduino = serial.Serial(port='/dev/cu.usbmodem1101', baudrate=115200, timeout=1)
+    time.sleep(3)  # Arduino reset delay
 except Exception as error:
     print("Error while connecting to Arduino, make sure port is correct.", error)
     sys.exit(1)  # stop the program, error code 1
@@ -83,9 +84,10 @@ while (True):
     try: 
         rpm = read_rpm() # Receive RPM from arduino
         insert_db(rpm) # Insert rpm value to database
+        time.sleep(0.25)
 
     except Exception as error:
-        print("Error while reading from sensor or inserting to database", error)
+        print("Error while reading from sensor or inserting to database: ", error)
         time.sleep(5)
 
 
