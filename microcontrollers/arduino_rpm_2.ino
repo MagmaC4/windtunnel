@@ -1,5 +1,5 @@
 #define IRpin 2
-#define TIMEOUT 2000 // milliseconds to reset rpm
+#define TIMEOUT 5000 // milliseconds to reset rpm
 
 // This script counts the RPM of a spinning motor using
 // an IR sensor and a reflective piece of tape.
@@ -35,7 +35,7 @@ void loop() {
   }
 
   // if motor stopped spinning, reset rpm to 0
-  if (millis() - curr_timestamp > 2000){
+  if (millis() - curr_timestamp > TIMEOUT){
     rpm = 0;
   }
 
