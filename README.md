@@ -7,23 +7,25 @@ Navigate to Next.js folder
 Start local server and client  
 ```npm run dev``` 
 
-Build website and run webserver
-```npm run build```
-```npm run start```
+Build website and run webserver  
+```npm run build```  
+```npm run start```  
 
 # Backend Environment
 
-Install Python3  
-```python3 -m pip install pyserial```
-```python3 -m pip install psycopg2```
+Install Python3   
+```python3 -m pip install pyserial```  
+```pip install psycopg2```  
+```pip install python-dotenv```  
+
 
 # Frontend Evnironment
 
 Install Node.js  
-```cd frontend/```
-```npm install```
-```npm install pg```
-```npm install --save-dev @types/pg```
+```cd frontend/```  
+```npm install```  
+```npm install pg```  
+```npm install --save-dev @types/pg```  
 
 ## Project workflow
 
