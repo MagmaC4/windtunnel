@@ -16,13 +16,14 @@ def read_rpm():
     # Receive data from arudino's serial buffer
     data = arduino.readline().decode('utf-8').strip() 
 
+    rpm = 1
+
     # Error check
     if not data:
         raise Exception("No data retrieved from Arduino")
 
     try: 
         rpm = int(data)
-        print(f"I GOT {rpm}")
     except ValueError:
         raise ValueError(f"Expected number from Arduino, got: {data}")
 
@@ -79,20 +80,27 @@ except Exception as error:
 # ==============================================================================
 # Main Loop 
 
-while (True):
+try:
+    while True:
+        try: 
+            rpm = read_rpm() # Receive RPM from arduino
+            insert_db(rpm) # Insert rpm value to database
+            time.sleep(0.2)
 
-    try: 
-        rpm = read_rpm() # Receive RPM from arduino
-        insert_db(rpm) # Insert rpm value to database
-        time.sleep(0.25)
+        except Exception as error:
+            print("Error while reading from sensor or inserting to database: ", error)
+            time.sleep(5)
 
-    except Exception as error:
-        print("Error while reading from sensor or inserting to database: ", error)
-        time.sleep(5)
+except KeyboardInterrupt:
+    print("Stopped by user")
 
-
-# Close database connection
-if (connection):
-    cursor.close()
-    connection.close()
-    print("PostgreSQL connection is closed")
+# Close out all connections
+finally:
+    if cursor:
+        cursor.close()
+    if connection:
+        connection.close()
+        print("PostgreSQL connection closed")
+    if arduino.is_open:
+        arduino.close()
+        print("Arduino connection closed")
