@@ -43,8 +43,8 @@ void loop() {
   prev_IRread = IRread;
 
   // Print rpm to serial buffer
-  // Printing is stagged to every 20ms, to prevent garbadge data from overflowing the serial buffer
-  if (millis() % 20 == 0 && print_timestamp != millis()){
+  // Printing is stagged to every 100ms, to prevent garbadge data from overflowing the serial buffer
+  if (millis() - print_timestamp >= 100){
     Serial.println(rpm);
     print_timestamp = millis();
   }
