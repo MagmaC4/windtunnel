@@ -12,7 +12,7 @@ import sys                      # exit early
 # Helper Functions
 def read_rpm():
     arduino.reset_input_buffer()  # discard old serial data
-
+    time.sleep(0.1)  # give Arduino time to send fresh data
     # Receive data from arudino's serial buffer
     data = arduino.readline().decode('utf-8').strip() 
 
@@ -71,8 +71,8 @@ except Exception as error:
 # ATTENTION, port is very likely to change occasionally 
 try: 
     print("Connecting to Arduino...")
-    arduino = serial.Serial(port='/dev/cu.usbmodem1101', baudrate=115200, timeout=1)
-    time.sleep(3)  # Arduino reset delay
+    arduino = serial.Serial(port='/dev/cu.usbmodem1101', baudrate=115200, timeout=None)
+    time.sleep(2)  # Arduino reset delay
 except Exception as error:
     print("Error while connecting to Arduino, make sure port is correct.", error)
     sys.exit(1)  # stop the program, error code 1
@@ -95,7 +95,7 @@ try:
 
         except Exception as error:
             print("Error while reading from sensor or inserting to database: ", error)
-            time.sleep(5)
+            time.sleep(INSERT_DELAY) # sleep in case of repeated errors
 
 except KeyboardInterrupt:
     print("Stopped by user")
