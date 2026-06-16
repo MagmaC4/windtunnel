@@ -2,6 +2,8 @@ from gpiozero import DigitalInputDevice
 from time import sleep
 from time import time_ns
 
+# Output RPM to terminal, constantly 
+
 IR_PIN = 17
 TIMEOUT = 5
 NANO = 1000000000
@@ -12,9 +14,6 @@ previous_ts = time_ns()
 recent_ts = time_ns()
 rpm = 0
 
-# IR Reading Legend:
-# 0 = Off
-# 1 = On 
 
 def calculate_rpm(recent_ts : int, previous_ts : int) -> int: 
     # Using nanosecond timestamps, 1,000,000,000 = 1 second
