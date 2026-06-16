@@ -8,9 +8,10 @@
 // 0 = REFLECTION 
 
 int rpm = 0;
+int prev_IRread = 1;
 unsigned long curr_timestamp = 0;
 unsigned long prev_timestamp = 0;
-int prev_IRread = 1;
+unsigned long print_timestamp = 0; 
 
 void calculateRPM(){
   // 1000 milliseconds / (rotation time in milliseconds) * 60 seconds
@@ -42,7 +43,10 @@ void loop() {
   prev_IRread = IRread;
 
   // Print rpm to serial buffer
-  Serial.println(rpm);
-  
+  // Printing is stagged to every 20ms, to prevent garbadge data from overflowing the serial buffer
+  if (millis() % 20 == 0 && print_timestamp != millis()){
+    Serial.println(rpm);
+    print_timestamp = millis();
+  }
 
 }

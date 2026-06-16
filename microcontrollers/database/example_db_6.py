@@ -80,12 +80,18 @@ except Exception as error:
 # ==============================================================================
 # Main Loop 
 
+INSERT_DELAY = 0.2      # seconds to delay inserts 
+last_insert_ts = 0      # last insert timestamp
+
 try:
     while True:
         try: 
             rpm = read_rpm() # Receive RPM from arduino
-            insert_db(rpm) # Insert rpm value to database
-            time.sleep(0.2)
+            
+            # Insert RPM value to database, only if enough time has passed
+            if (time.time() - last_insert_ts) >= INSERT_DELAY:
+                insert_db(rpm) 
+                last_insert_ts = time.time()
 
         except Exception as error:
             print("Error while reading from sensor or inserting to database: ", error)
