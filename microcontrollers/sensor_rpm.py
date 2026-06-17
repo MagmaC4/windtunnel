@@ -39,6 +39,11 @@ def get_rpm() -> int:
 
     rpm = NANO_TO_SECONDS / (end_ts - start_ts) * 60
 
+    # Debugging
+    print(f"elapsed nanoseconds: {end_ts - start_ts}")
+    print(f"elapsed milliseconds: {(end_ts - start_ts) / 1_000_000:.2f}")
+    print(f"rpm: {rpm}")
+
     return int(rpm)
 
     
