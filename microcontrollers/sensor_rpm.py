@@ -19,7 +19,9 @@ def get_rpm() -> int:
     def has_timeout() -> bool:
         return (time_ns() - function_ts) > (TIMEOUT * NANO_TO_SECONDS)
         
-
+    # Block until falling edge
+    while ir_sensor.is_active:
+        if has_timeout(): return 0
     # Block until rising edge 
     while not ir_sensor.is_active:
         if has_timeout(): return 0
