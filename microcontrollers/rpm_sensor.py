@@ -10,7 +10,7 @@ RPM_LIMIT = 2500
 TIMEOUT = 5
 
 # TODO: Send error when this pin is not receiving anything
-ir_sensor = DigitalInputDevice(IR_PIN)
+ir_sensor = DigitalInputDevice(IR_PIN, bounce_time=0.005)
 
 def get_rpm() -> int:
     # Time since measurement attempt started
