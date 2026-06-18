@@ -37,11 +37,12 @@ def get_rpm() -> int:
     end_ts = time_ns()
     elapsed_ns = end_ts - start_ts
     rpm = NANO_TO_SECONDS / (elapsed_ns) * 60
+    print("=========================================================")
     print(f"Elapsed Nanoseconds: {elapsed_ns}")
 
     # Raise error if rpm exceeds limit (aka IR reading bounced back)
     if rpm > RPM_LIMIT:
-        raise Exception(f"RPM limit of {RPM_LIMIT} exceeded: {rpm}")
+        raise Exception(f"\nRPM limit of {RPM_LIMIT} exceeded: {rpm}")
 
     return int(rpm)
 
