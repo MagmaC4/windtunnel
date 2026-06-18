@@ -4,7 +4,7 @@
 
 
 import psycopg2                 # PostgreSQL
-from sensor_rpm import get_rpm  # Raspberry Pi
+from microcontrollers.rpm_sensor import get_rpm  # Raspberry Pi
 import time 
 import sys                      # exit early
 import os                       # .env
