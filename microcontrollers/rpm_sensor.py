@@ -20,18 +20,20 @@ def get_rpm() -> int:
     def has_timeout() -> bool:
         return (time_ns() - function_ts) > (TIMEOUT * NANO_TO_SECONDS)
 
-    def block_until_rising_edge():
-        # Block until falling edge
+    def block_until_rising_edge() -> bool:
         while ir_sensor.is_active:
-            if has_timeout(): return 0
-        # Block until rising edge 
+            if has_timeout(): return False
         while not ir_sensor.is_active:
-            if has_timeout(): return 0
+            if has_timeout(): return False
+        return True
+
 
     # Calculate rpm by measuring start and end rotation timestamps
-    block_until_rising_edge()
+    if not block_until_rising_edge():
+        return 0  # Timeout
     start_ts = time_ns()
-    block_until_rising_edge()
+    if not block_until_rising_edge():
+        return 0 # Timeout
     end_ts = time_ns()
     elapsed_ns = end_ts - start_ts
     rpm = NANO_TO_SECONDS / (elapsed_ns) * 60

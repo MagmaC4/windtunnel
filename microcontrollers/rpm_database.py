@@ -62,8 +62,9 @@ try:
 
             # Insert RPM value to database, only if enough time has passed
             if (time.time() - last_insert_ts) >= INSERT_DELAY:
-                insert_db(rpm) 
                 last_insert_ts = time.time()
+                insert_db(rpm) 
+                
             
         except Exception as error:
             print("Error while reading from sensor or inserting to database: ", error)

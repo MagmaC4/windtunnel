@@ -21,7 +21,7 @@ def calculate_rpm(recent_ts : int, previous_ts : int) -> int:
     diff = recent_ts - previous_ts
     if diff == 0:
         return 0
-    return NANO // (diff) * 60
+    return int(NANO / (diff) * 60)
 
 while True:
     print(f"Sensor reading: {ir_sensor.is_active}")
