@@ -4,7 +4,7 @@
 
 
 import psycopg2                 # PostgreSQL
-from microcontrollers.rpm_sensor import get_rpm  # Raspberry Pi
+from rpm_sensor import get_rpm  # Raspberry Pi
 import time 
 import sys                      # exit early
 import os                       # .env
@@ -67,7 +67,6 @@ try:
             
         except Exception as error:
             print("Error while reading from sensor or inserting to database: ", error)
-            time.sleep(5)
 
 except KeyboardInterrupt:
     print("Stopped by user")
