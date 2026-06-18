@@ -1,5 +1,6 @@
 from gpiozero import DigitalInputDevice
 from time import time_ns
+from time import sleep
 
 # RPM is measured by a function 
 # Function blocks until a full rotation is made, or timeout is reached
@@ -32,6 +33,7 @@ def get_rpm() -> int:
     if not block_until_rising_edge():
         return 0  # Timeout
     start_ts = time_ns()
+    sleep(0.001)
     if not block_until_rising_edge():
         return 0 # Timeout
     end_ts = time_ns()
