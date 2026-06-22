@@ -26,6 +26,7 @@ Install Node.js
 ```npm install```  
 ```npm install pg```  
 ```npm install --save-dev @types/pg```  
+```npm install gauge.js```  
 
 ## Project workflow
 

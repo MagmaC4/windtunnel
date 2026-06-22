@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Footer from '@/components/Footer';
 
 export default function Home() {
   const [data, setData] = useState<any>({ rpm: null, error: null });
