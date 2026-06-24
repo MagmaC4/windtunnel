@@ -35,7 +35,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {children} {/* Subsituted for any element rendered to the page */}
-        <Footer /> {/* Navigation Bar */}
+        <Footer/> {/* Navigation Bar */}
       </body>
     </html>
   );
