@@ -1,7 +1,7 @@
 "use client"; // gauge requires browser, so use client here
 
 import {useEffect, useRef, useState} from "react";
-import {Gauge} from "gaugeJS";
+// import {Gauge} from "gaugeJS";
 
 export default function RPMGauge(){
 
@@ -17,54 +17,55 @@ export default function RPMGauge(){
         // null check, make sure canvas exists
         if (!canvasRef.current) return;
 
-        // customize gauge options (visual style)
-        
-        const opts = {
-            angle: -0.2, // The span of the gauge arc
-            lineWidth: 0.2, // The line thickness
-            radiusScale: 1, // Relative radius
-            pointer: {
-                length: 0.6, // // Relative to gauge radius
-                strokeWidth: 0.035, // The thickness
-                color: '#ff5757' // Fill color
-            },
-            fontSize: 42,
-            staticLabels: {
-                font: "10px sans-serif",  // Specifies font
-                labels: [0, 500, 1000, 1500, 2000, 2500, 3000],  // Print labels at these values
-                color: "#ffffff",  // Optional: Label text color
-                fractionDigits: 0  // Optional: Numerical precision. 0=round off.
-            },
-            limitMax: false,     // If false, max value increases automatically if value > maxValue
-            limitMin: false,     // If true, the min value of the gauge will be fixed
-            colorStart: '#6F6EA0',   // Colors
-            colorStop: '#C0C0DB',    // just experiment with them
-            strokeColor: '#EEEEEE',  // to see which ones work best for you
-            generateGradient: true,
-            highDpiSupport: true,     // High resolution support
-            // renderTicks is Optional
-            renderTicks: {
-                divisions: 6,
-                divWidth: 1.1,
-                divLength: 0.7,
-                divColor: '#333333',
-                subDivisions: 3,
-                subLength: 0.5,
-                subWidth: 0.6,
-                subColor: '#666666'
-            }
+        import("gaugeJS").then(({ Gauge }) => {
+            // customize gauge options (visual style)
+            const opts = {
+                angle: -0.2, // The span of the gauge arc
+                lineWidth: 0.2, // The line thickness
+                radiusScale: 1, // Relative radius
+                pointer: {
+                    length: 0.6, // // Relative to gauge radius
+                    strokeWidth: 0.035, // The thickness
+                    color: '#ff5757' // Fill color
+                },
+                fontSize: 42,
+                staticLabels: {
+                    font: "10px sans-serif",  // Specifies font
+                    labels: [0, 500, 1000, 1500, 2000, 2500, 3000],  // Print labels at these values
+                    color: "#ffffff",  // Optional: Label text color
+                    fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+                },
+                limitMax: false,     // If false, max value increases automatically if value > maxValue
+                limitMin: false,     // If true, the min value of the gauge will be fixed
+                colorStart: '#6F6EA0',   // Colors
+                colorStop: '#C0C0DB',    // just experiment with them
+                strokeColor: '#EEEEEE',  // to see which ones work best for you
+                generateGradient: true,
+                highDpiSupport: true,     // High resolution support
+                // renderTicks is Optional
+                renderTicks: {
+                    divisions: 6,
+                    divWidth: 1.1,
+                    divLength: 0.7,
+                    divColor: '#333333',
+                    subDivisions: 3,
+                    subLength: 0.5,
+                    subWidth: 0.6,
+                    subColor: '#666666'
+                }
 
-        };
+            };
 
-        // create gauge object
-        // 
-        const gauge = new Gauge(canvasRef.current).setOptions(opts);
-        gauge.maxValue = 3000;
-        gauge.setMinValue(0);
-        gauge.animationSpeed = 32;
-        gauge.set(375);
+            // create gauge object
+            const gauge = new Gauge(canvasRef.current).setOptions(opts);
+            gauge.maxValue = 3000;
+            gauge.setMinValue(0);
+            gauge.animationSpeed = 32;
+            gauge.set(375);
+            // assign gauge to gaugeRef
+            gaugeRef.current = gauge;
+        });
 
-        gaugeRef.current = gauge;
     }, []);
 
 
