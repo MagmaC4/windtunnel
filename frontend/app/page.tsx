@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Footer from '@/components/Footer';
 
 export default function Home() {
   const [data, setData] = useState<any>({ rpm: null, error: null });
@@ -21,7 +20,7 @@ export default function Home() {
     };
 
     fetchRpm(); // fetch immediately on mount
-    const interval = setInterval(fetchRpm, 500); // then every 1 second
+    const interval = setInterval(fetchRpm, 200); // run fetchRPM every 200ms
 
     return () => clearInterval(interval); // cleanup on unmount
   }, []);
