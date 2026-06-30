@@ -27,6 +27,7 @@ Install Node.js
 ```npm install pg```  
 ```npm install --save-dev @types/pg```  
 ```npm install gaugeJS```  
+```npm install recharts```  
 
 ## Project workflow
 
