@@ -1,4 +1,5 @@
 // Navigation footer
+// Put links to other pages here
 
 import Link from 'next/link';
 
@@ -12,8 +13,13 @@ export default function Footer(){
                     <Link href="/" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
                         Home
                     </Link>
+
                     <Link href="/gauge" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
                         Gauge
+                    </Link>
+
+                    <Link href="/chart" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+                        Chart
                     </Link>
                 </nav>
             </div>

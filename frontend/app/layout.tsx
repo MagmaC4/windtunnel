@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 
 // Set metadata for webpage for SEO
 export const metadata: Metadata = {
-  title: "Windtunnel",
-  description: "Digital Twin for the Windtunnel located in the University of Minnesota AEM Department",
+  title: "Wind Tunnel | UMN",
+  description: "Digital Twin for the Wind Tunnel located in the University of Minnesota AEM Department",
 };
 
 

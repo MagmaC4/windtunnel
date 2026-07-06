@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
+/* Add colors for recharts graph */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --color-border-3: #e0e0e0;
+  --color-border-2: #ccc;
+  --color-text-3: #666;
+  --color-surface-raised: #fff;
+  --color-surface-base: #fff;
+  --color-chart-1: #8884d8;
+  --color-chart-2: #82ca9d;
 }
 
 @theme inline {
