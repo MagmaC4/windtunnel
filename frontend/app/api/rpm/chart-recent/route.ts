@@ -6,10 +6,12 @@ export async function GET(){
     try {
 
         const query = `
-            SELECT timestamp, rpm
+            SELECT DISTINCT ON (date_trunc('second', timestamp))
+              to_char(timestamp, 'Mon DD, HH12:MI:SS AM') AS name,
+              rpm
             FROM motor_rpm
             WHERE status = 'Running'
-            ORDER BY timestamp DESC
+            ORDER BY date_trunc('second', timestamp) DESC, timestamp DESC
             LIMIT 60;
         `
 
@@ -18,13 +20,13 @@ export async function GET(){
         const chartData = result.rows
             .reverse() // oldest first, so the line reads left-to-right correctly
             .map(row => ({
-                name: row.timestamp,
+                name: row.name,
                 rpm: row.rpm,
             }));
 
         return Response.json(chartData)
 
-        }
+    }
 
     catch(error){
         // send error

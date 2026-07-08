@@ -21,6 +21,9 @@ export default function Footer(){
                     <Link href="/chart" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
                         Chart
                     </Link>
+                    <Link href="/dashboard" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
+                        Dashboard
+                    </Link>
                 </nav>
             </div>
         </footer>
