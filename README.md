@@ -17,6 +17,7 @@ Install Python3
 ```python3 -m pip install pyserial```  
 ```pip install psycopg2```  
 ```pip install python-dotenv```  
+```pip3 install adafruit-circuitpython-bmp5xx```  
 
 
 # Frontend Evnironment
