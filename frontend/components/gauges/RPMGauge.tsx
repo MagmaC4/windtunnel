@@ -5,7 +5,7 @@
 import {useEffect, useRef, useState} from "react";
 // import {Gauge} from "gaugeJS";
 
-export default function RPMGauge(){
+export default function RPMGauge({value}){
 
     const canvasRef = useRef(null);
     const gaugeRef = useRef<any>(null);
@@ -71,37 +71,14 @@ export default function RPMGauge(){
     }, []);
 
 
-    // Set RPM from database
-    const [rpm, setRpm] = useState(0);
-
-    useEffect(() => {
-        // get RPM from database
-        const fetchRpm = async () => {
-            try{
-                const res = await fetch("/api/rpm/latest");
-                const json = await res.json();
-                setRpm(json.latest);
-            }
-            catch (error) {
-                console.log(error);
-            }
-        }
-
-        fetchRpm(); // first fetch
-        const interval = setInterval(fetchRpm, 200); // run fetches on a timer
-        return () => clearInterval(interval) // cleanup on unmount
-    }, []);
-
-
-    // Update gauge once rpm changes
+    // Update gauge once value changes
     useEffect(() => {
         // null check, make sure gauge exists
         if (!gaugeRef.current) return;
-        gaugeRef.current.set(rpm);
-    }, [rpm]);
+        gaugeRef.current.set(value);
+    }, [value]);
 
     return (
-        
         <canvas 
             ref={canvasRef}
             width={250}
