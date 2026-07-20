@@ -1,4 +1,4 @@
-import RPMGauge from "@/components/gauges/RPMGauge";
+import RPMGauge from "@/components/RPMGauge";
 
 export default function Page(){
     return (

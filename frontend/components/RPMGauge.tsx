@@ -1,4 +1,4 @@
-// Dashboard RPM Gauge
+// RPMGauge by itself
 
 "use client"; // gauge requires browser, so use client here
 
@@ -104,8 +104,8 @@ export default function RPMGauge(){
         
         <canvas 
             ref={canvasRef}
-            width={250}
-            height={180}
+            width={400}
+            height={300}
         />
         
     )

@@ -14,7 +14,7 @@ import PressureGauge from "@/components/gauges/PressureGauge";
 
 export default function Dashboard() {
     // update sensor values using api function (aka hook)
-    const { rpm, windSpeed, temp, pressure } = useSensorData();
+    const { rpm, airSpeed, temp, pressure } = useSensorData();
 
 return (
     // display Dashboard as grid of these cards
@@ -24,7 +24,7 @@ return (
 
         <div className="flex flex-col gap-4">
             <GaugeCard title="RPM" value={rpm} GaugeComponent={RPMGauge} />
-            <GaugeCard title="Wind Speed" value={windSpeed} GaugeComponent={WindGauge} />
+            <GaugeCard title="Air Speed" value={airSpeed} GaugeComponent={WindGauge} />
         </div>
 
         <div className="flex flex-col gap-4">

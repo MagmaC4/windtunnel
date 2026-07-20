@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 interface SensorData {
   rpm: number;
-  windSpeed: number;
+  airSpeed: number;
   temp: number;
   pressure: number;
 }
@@ -12,7 +12,7 @@ interface SensorData {
 export function useSensorData(): SensorData {
   const [data, setData] = useState<SensorData>({
     rpm: 0,
-    windSpeed: 0,
+    airSpeed: 0,
     temp: 0,
     pressure: 0,
   });
