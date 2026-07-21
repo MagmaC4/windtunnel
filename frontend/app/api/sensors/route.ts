@@ -29,6 +29,21 @@ export async function GET() {
         // data.rpm stays 0 as fallback
     }
 
+    // latest temperature query
+        try {
+            const result = await pool.query(
+                'SELECT temp_celsius, pressure_hpa FROM thermometer ORDER BY timestamp DESC LIMIT 1'
+            );
+            data.temp = result.rows[0].temp_celsius;
+            data.temp = data.temp.toFixed(2);
+            data.pressure = result.rows[0].pressure_hpa;
+            data.pressure = data.pressure.toFixed(2);
+        }
+        catch (error) {
+            console.error('Failed to fetch latest temperature:', error);
+            // data.rpm stays 0 as fallback
+        }
+
 
 
 

@@ -1,4 +1,4 @@
-// Dashboard
+// app/dashboard/page.tsx
 
 "use client"
 
@@ -23,13 +23,13 @@ return (
         <Card><RechartCard rpm={rpm} temp={temp} /></Card>
 
         <div className="flex flex-col gap-4">
-            <GaugeCard title="RPM" value={rpm} GaugeComponent={RPMGauge} />
+            <GaugeCard title="Motor RPM" value={rpm} GaugeComponent={RPMGauge} />
             <GaugeCard title="Air Speed" value={airSpeed} GaugeComponent={WindGauge} />
         </div>
 
         <div className="flex flex-col gap-4">
-            <GaugeCard title="Temp" value={temp} GaugeComponent={TempGauge} />
-            <GaugeCard title="Pressure" value={pressure} GaugeComponent={PressureGauge} />
+            <GaugeCard title="Temperature (C)" value={temp} GaugeComponent={TempGauge} />
+            <GaugeCard title="Pressure (hPa)" value={pressure} GaugeComponent={PressureGauge} />
         </div>
     </div>
   );
