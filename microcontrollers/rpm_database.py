@@ -19,7 +19,7 @@ def insert_db(rpm):
     if rpm > 0:
         status = 'Running'
     else:
-        status = 'Idle'
+        status = 'Off'
 
     print(f"Inserting {rpm} into table...")
     cursor.execute(sql_insert, (rpm, status)) # execute insert command
