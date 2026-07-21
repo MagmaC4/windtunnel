@@ -1,35 +1,42 @@
-# Database Attempt 7
-# Insert into PostgreSQL database
-# Use Raspberry Pi to measure RPM
-
+# Insert temperature, pressure, and altitude into database
+# Table Name: thermometer
+# Table Columns: id, timestamp, temp_celsius, temp_fahrenheit, pressure_hpa, altitude
 
 import psycopg2                 # PostgreSQL
-from rpm_sensor import get_rpm  # Raspberry Pi
-import time 
+import time                     # sleep
 import sys                      # exit early
 import os                       # .env
 from dotenv import load_dotenv  # .env
+import board                    # thermometer
+import busio                    # thermometer
+from adafruit_bmp5xx import BMP5XX  # thermometer
 
 # ==============================================================================
 # Helper Functions
-def insert_db(rpm):
-    # Insert reading into SQL Database
-    sql_insert = "INSERT INTO motor_rpm (rpm, status) VALUES (%s, %s)"
 
-    if rpm > 0:
-        status = 'Running'
+def insert_db():
+    # Gather thermometer readings at time of insert
+    if bmp.data_ready:
+        temp_c = bmp.temperature
+        temp_f = temp_c * 1.8 + 32
+        pressure = bmp.pressure
+        altitude = bmp.altitude
     else:
-        status = 'Idle'
+        # end insert early if data is not ready
+        return
 
-    print(f"Inserting {rpm} into table...")
-    cursor.execute(sql_insert, (rpm, status)) # execute insert command
+    # Insert reading into SQL Database
+    sql_insert = "INSERT INTO thermometer (temp_celsius, temp_fahrenheit, pressure_hpa, altitude_m) VALUES (%s, %s, %s, %s)"
+
+    print(f"Inserting thermometer readings into table...")
+    cursor.execute(sql_insert, (temp_c, temp_f, pressure, altitude)) # execute insert command
     connection.commit() # save changes to database
 
 # ==============================================================================
 # Setup SQL connection
 try:
     # Load .env file as os.getenv
-    if (load_dotenv() == False):
+    if not load_dotenv():
         raise Exception("Failed to load .env file")
 
     # Connect to existing database
@@ -50,22 +57,23 @@ except Exception as error:
     sys.exit(1)  # stop the program, error code 1
 
 # ==============================================================================
-# Main Loop 
+# Setup thermometer
 
-INSERT_DELAY = 0.2      # seconds to delay inserts 
-last_insert_ts = 0      # last insert timestamp
+# Initialize I2C bus
+i2c = busio.I2C(board.SCL, board.SDA)
+# Initialize the BMP581 sensor
+bmp = BMP5XX.over_i2c(i2c)
+# Set your local sea-level pressure in hPa for accurate altitude readings
+bmp.sea_level_pressure = 1013.25
+
+# ==============================================================================
+# Main Loop
 
 try:
     while True:
-        try: 
-            rpm = get_rpm() # Receive RPM from Raspberry Pi
-
-            # Insert RPM value to database, only if enough time has passed
-            if (time.time() - last_insert_ts) >= INSERT_DELAY:
-                last_insert_ts = time.time()
-                insert_db(rpm) 
-                
-            
+        try:
+            insert_db()
+            time.sleep(0.2)
         except Exception as error:
             print("Error while reading from sensor or inserting to database: ", error)
             connection.rollback()

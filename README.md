@@ -1,5 +1,11 @@
 # Windtunnel Aerospace Engineering and Mechanics Project
 
+This project serves to provide a dashboard for the Wind Tunnel in the University of Minnesota Aerospace Engineering building.
+
+RaspberryPi's are placed in the Wind Tunnel as motor rpm sensors, thermometers, and barometers.
+
+They send sensor data to a database. The website reads from this database and displays the information.
+
 ## How to run
 Navigate to Next.js folder  
 ```cd frontend``` 
@@ -11,13 +17,13 @@ Build website and run webserver
 ```npm run build```  
 ```npm run start```  
 
-# Backend Environment
+# Microcontroller Environment
 
 Install Python3   
-```python3 -m pip install pyserial```  
+```pip install pyserial```  
 ```pip install psycopg2```  
 ```pip install python-dotenv```  
-```pip3 install adafruit-circuitpython-bmp5xx```  
+```pip install adafruit-circuitpython-bmp5xx```  
 
 
 # Frontend Evnironment
@@ -28,17 +34,7 @@ Install Node.js
 ```npm install pg```  
 ```npm install --save-dev @types/pg```  
 ```npm install gaugeJS```  
-```npm install recharts```  
-
-## Project workflow
-
-1. Arduino sends a sensor measurement every 500 seconds
-2. pySerial intercepts the arduino serial output 
-3. Data is stored in a local SQL table, each entry has (measurement, time, date)
-4. Local website displays average reading from the past hour
-
-## Pipeline:
-    Motor >> LidarLite Garmin >> Arduino >> RaspberryPi (w/ WiFi) >> UMN Server >> SQLite Database >> Website 
+```npm install recharts```
 
 # Documentation
 
@@ -60,4 +56,11 @@ Database
 Website / React
 - [Next.js Documentation](https://nextjs.org/docs/app/getting-started)
 
+# Things that could go wrong
+
+- Database is down (my personal computer)
+- RaspberryPi is not sending new data to database
+  - reboot RaspberryPi, sometimes works
+- RaspberryPi is not connected to the internet
+  - need IoT device registration, maybe it got severed
 
