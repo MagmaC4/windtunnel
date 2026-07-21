@@ -31,7 +31,7 @@ export default function RPMChart() {
         }
 
         fetchChartRpm(); // first fetch
-        const interval = setInterval(fetchChartRpm, 60000) // repeat api calls
+        const interval = setInterval(fetchChartRpm, 1000) // repeat api calls
         return () => clearInterval(interval) // cleanup on unmount
 
     }, []);
