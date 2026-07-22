@@ -20,7 +20,7 @@ return (
     // display Dashboard as grid of these cards
     <div className="grid grid-cols-2 grid-rows-2 gap-4 h-screen p-4">
         <Card><StatusBox /></Card>
-        <Card><RechartCard rpm={rpm} temp={temp} /></Card>
+        <Card><RechartCard /></Card>
 
         <div className="flex flex-col gap-4">
             <GaugeCard title="Motor RPM" value={rpm} GaugeComponent={RPMGauge} />

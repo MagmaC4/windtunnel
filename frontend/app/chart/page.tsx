@@ -1,4 +1,4 @@
-import RPMChart from "@/components/RPMChart.tsx"
+import RPMChart from "@/components/RPMChart"
 
 export default function Page() {
     return (
