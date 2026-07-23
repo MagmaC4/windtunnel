@@ -5,7 +5,11 @@
 import {useEffect, useRef, useState} from "react";
 // import {Gauge} from "gaugeJS";
 
-export default function PressureGauge({value}){
+type PressureGaugeProps = {
+    value : number;
+}
+
+export default function PressureGauge({value} : PressureGaugeProps){
 
     const canvasRef = useRef(null);
     const gaugeRef = useRef<any>(null);

@@ -5,7 +5,11 @@
 import {useEffect, useRef, useState} from "react";
 // import {Gauge} from "gaugeJS";
 
-export default function RPMGauge({value}){
+type RPMGaugeProps = {
+    value : number;
+}
+
+export default function RPMGauge({value} : RPMGaugeProps){
 
     const canvasRef = useRef(null);
     const gaugeRef = useRef<any>(null);

@@ -1,6 +1,13 @@
 import Card from "./Card";
 
-export default function GaugeCard({ title, value, GaugeComponent }) {
+import {ComponentType} from "react";
+type GaugeCardProps = {
+    title: string;
+    value: number;
+    GaugeComponent: ComponentType<{value : number}>;
+}
+
+export default function GaugeCard({ title, value, GaugeComponent }: GaugeCardProps) {
   return (
     <Card className="flex-1 flex items-center justify-between">
         <div>

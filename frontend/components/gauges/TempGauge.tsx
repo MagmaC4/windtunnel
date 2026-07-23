@@ -5,7 +5,11 @@
 import {useEffect, useRef, useState} from "react";
 // import {Gauge} from "gaugeJS";
 
-export default function TempGauge({value}){
+type TempGaugeProps = {
+    value : number;
+}
+
+export default function TempGauge({value} : TempGaugeProps){
 
     const canvasRef = useRef(null);
     const gaugeRef = useRef<any>(null);
