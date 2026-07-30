@@ -37,9 +37,9 @@ export default function PressureGauge({value} : PressureGaugeProps){
                 fontSize: 42,
                 staticLabels: {
                     font: "10px sans-serif",  // Specifies font
-                    labels: [950, 960, 970, 980, 990, 1000, 1010, 1020, 1030, 1040, 1050],  // Print labels at these values
+                    labels: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],  // Print labels at these values
                     color: "#ffffff",  // Optional: Label text color
-                    fractionDigits: 0  // Optional: Numerical precision. 0=round off.
+                    fractionDigits: 1  // Optional: Numerical precision. 0=round off.
                 },
                 limitMax: false,     // If false, max value increases automatically if value > maxValue
                 limitMin: false,     // If true, the min value of the gauge will be fixed
@@ -50,11 +50,11 @@ export default function PressureGauge({value} : PressureGaugeProps){
                 highDpiSupport: true,     // High resolution support
                 // renderTicks is Optional
                 renderTicks: {
-                    divisions: 6,
+                    divisions: 5,
                     divWidth: 1.1,
                     divLength: 0.7,
                     divColor: '#333333',
-                    subDivisions: 3,
+                    subDivisions: 4,
                     subLength: 0.5,
                     subWidth: 0.6,
                     subColor: '#666666'
@@ -64,10 +64,10 @@ export default function PressureGauge({value} : PressureGaugeProps){
 
             // create gauge object
             const gauge = new Gauge(canvasRef.current).setOptions(opts);
-            gauge.maxValue = 1050;
-            gauge.setMinValue(950);
+            gauge.maxValue = 1;
+            gauge.setMinValue(0);
             gauge.animationSpeed = 32;
-            gauge.set(950);
+            gauge.set(0);
             // assign gauge to gaugeRef
             gaugeRef.current = gauge;
         });

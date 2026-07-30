@@ -50,11 +50,11 @@ export default function TempGauge({value} : TempGaugeProps){
                 highDpiSupport: true,     // High resolution support
                 // renderTicks is Optional
                 renderTicks: {
-                    divisions: 6,
+                    divisions: 5,
                     divWidth: 1.1,
                     divLength: 0.7,
                     divColor: '#333333',
-                    subDivisions: 3,
+                    subDivisions: 4,
                     subLength: 0.5,
                     subWidth: 0.6,
                     subColor: '#666666'

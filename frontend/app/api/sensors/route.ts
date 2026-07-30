@@ -35,7 +35,7 @@ export async function GET() {
                 'SELECT temp_celsius, pressure_hpa FROM thermometer ORDER BY timestamp DESC LIMIT 1'
             );
             data.temp = result.rows[0].temp_celsius;
-            data.pressure = result.rows[0].pressure_hpa;
+            data.pressure = result.rows[0].pressure_hpa / 10000;
         }
         catch (error) {
             console.error('Failed to fetch latest temperature:', error);
