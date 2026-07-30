@@ -1,4 +1,4 @@
-import RPMGauge from "@/components/RPMGauge";
+import RPMGauge from "@/components/deprecated/RPMGauge";
 
 export default function Page(){
     return (

@@ -60,7 +60,7 @@ export default function RPMChart() {
             type="linear"
             dataKey="rpm"
             stroke="#82ca9d"
-            dot={ fill: '#fff' }
+            dot={{ fill: '#fff' }}
             activeDot={{ stroke: '#fff' }}
           />
         </LineChart>

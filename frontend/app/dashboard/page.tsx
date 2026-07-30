@@ -23,7 +23,7 @@ return (
         <Card><RechartCard /></Card>
 
         <div className="flex flex-col gap-4">
-            <GaugeCard title="Motor RPM" value={rpm} GaugeComponent={RPMGauge} />
+            <GaugeCard title="Motor RPM" value={rpm} decimalPlaces={0} GaugeComponent={RPMGauge} />
             <GaugeCard title="Air Speed (m/s)" value={airSpeed} decimalPlaces={2} GaugeComponent={WindGauge} />
         </div>
 
