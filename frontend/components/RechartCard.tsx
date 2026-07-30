@@ -31,21 +31,34 @@ export default function RechartCard() {
         }
 
         fetchChartRpm(); // first fetch
-        const interval = setInterval(fetchChartRpm, 60000) // repeat api calls
+        const interval = setInterval(fetchChartRpm, 1000) // repeat api calls
         return () => clearInterval(interval) // cleanup on unmount
 
     }, []);
 
   return (
-    <div style={{ width: '100%', height: '100%' }}>
+  <div
+    style={{
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    <div style={{ width: '90%', height: '90%' }}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
           data={chartData}
-          margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
+          margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" vertical={false} />
           <XAxis dataKey="name" stroke="#666" interval={47}/>
-          <YAxis width={40} stroke="#666" />
+          <YAxis
+            width={40}
+            stroke="#666"
+            domain={[0, 2400]}
+          />
           <Tooltip
             cursor={{ stroke: '#ccc' }}
             contentStyle={{
@@ -60,11 +73,12 @@ export default function RechartCard() {
             type="linear"
             dataKey="rpm"
             stroke="#818cf8"
-            dot={{ fill: '#fff' }}
+            dot={false}
             activeDot={{ stroke: '#fff' }}
           />
         </LineChart>
       </ResponsiveContainer>
     </div>
+</div>
   );
 }

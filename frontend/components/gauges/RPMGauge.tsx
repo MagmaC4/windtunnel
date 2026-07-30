@@ -37,7 +37,7 @@ export default function RPMGauge({value} : RPMGaugeProps){
                 fontSize: 42,
                 staticLabels: {
                     font: "10px sans-serif",  // Specifies font
-                    labels: [0, 500, 1000, 1500, 2000, 2500, 3000],  // Print labels at these values
+                    labels: [0, 250, 500, 750, 1000, 1250, 1500],  // Print labels at these values
                     color: "#ffffff",  // Optional: Label text color
                     fractionDigits: 0  // Optional: Numerical precision. 0=round off.
                 },
@@ -64,7 +64,7 @@ export default function RPMGauge({value} : RPMGaugeProps){
 
             // create gauge object
             const gauge = new Gauge(canvasRef.current).setOptions(opts);
-            gauge.maxValue = 3000;
+            gauge.maxValue = 1500;
             gauge.setMinValue(0);
             gauge.animationSpeed = 32;
             gauge.set(0);

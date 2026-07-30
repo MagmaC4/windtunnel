@@ -10,10 +10,10 @@ type GaugeCardProps = {
 
 export default function GaugeCard({ title, value, decimalPlaces, GaugeComponent }: GaugeCardProps) {
   return (
-    <Card className="flex-1 flex items-center justify-between">
+    <Card className="flex-1 flex items-center flex-col lg:flex-row  justify-between">
         <div>
             <p className="text-2xl text-gray-500">{title}</p>
-            <p className="text-8xl font-bold">
+            <p className="text-7xl font-bold">
                 {/* display value here, if its a decimal then truncate to 0.00 */}
                 {value % 1 == 0 ? value : value.toFixed(decimalPlaces)}
             </p>

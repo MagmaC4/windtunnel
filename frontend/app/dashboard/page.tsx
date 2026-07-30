@@ -18,7 +18,7 @@ export default function Dashboard() {
 
 return (
     // display Dashboard as grid of these cards
-    <div className="grid grid-cols-2 grid-rows-2 gap-4 h-screen p-4">
+    <div className="grid grid-cols-2 grid-rows-2 gap-4 min-h-screen p-4">
         <Card><StatusBox /></Card>
         <Card><RechartCard /></Card>
 
