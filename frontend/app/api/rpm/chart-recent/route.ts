@@ -10,7 +10,6 @@ export async function GET(){
               to_char(timestamp, 'Mon DD, HH12:MI:SS AM') AS name,
               rpm
             FROM motor_rpm
-            WHERE status = 'Running'
             ORDER BY date_trunc('second', timestamp) DESC, timestamp DESC
             LIMIT 60;
         `

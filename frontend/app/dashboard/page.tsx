@@ -18,9 +18,9 @@ export default function Dashboard() {
 
 return (
     // display Dashboard as grid of these cards
-    <div className="grid grid-cols-2 grid-rows-2 gap-4 min-h-screen p-4">
-        <Card><StatusBox /></Card>
-        <Card><RechartCard /></Card>
+    <div className="grid grid-cols-2  gap-4 min-h-screen p-4">
+        <Card className="col-span-2 lg:col-span-1"><StatusBox /></Card>
+        <Card className="hidden lg:block"><RechartCard /></Card>
 
         <div className="flex flex-col gap-4">
             <GaugeCard title="Motor RPM" value={rpm} decimalPlaces={0} GaugeComponent={RPMGauge} />
