@@ -62,7 +62,7 @@ try:
             rpm = get_rpm() # Receive RPM from Raspberry Pi
 
             # accept rpm only if its not bogus
-            if not (last_rpm == 0 or rpm <= 100 or rpm < 5 * last_rpm):
+            if ((last_rpm == 0 and rpm > 500) or (rpm > 3 * last_rpm)):
                 raise Exception("RPM exceeds previous measurement")
 
             last_rpm = rpm
