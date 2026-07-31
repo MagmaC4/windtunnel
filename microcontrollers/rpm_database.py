@@ -54,11 +54,16 @@ except Exception as error:
 
 INSERT_DELAY = 0.2      # seconds to delay inserts 
 last_insert_ts = 0      # last insert timestamp
+last_rpm = 0
 
 try:
     while True:
         try: 
             rpm = get_rpm() # Receive RPM from Raspberry Pi
+
+            # accept rpm only if its not bogus
+            if not (rpm < 100 or rpm < 5 * last_rpm):
+                raise Exception("RPM exceeds previous measurement")
 
             # Insert RPM value to database, only if enough time has passed
             if (time.time() - last_insert_ts) >= INSERT_DELAY:
