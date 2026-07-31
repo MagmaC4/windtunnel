@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Add colors for recharts graph */
+/* LIGHT MODE */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -20,6 +20,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* DARK MODE */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #171717;

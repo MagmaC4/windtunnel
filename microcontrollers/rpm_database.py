@@ -65,6 +65,8 @@ try:
             if not (rpm < 100 or rpm < 5 * last_rpm):
                 raise Exception("RPM exceeds previous measurement")
 
+            last_rpm = rpm
+
             # Insert RPM value to database, only if enough time has passed
             if (time.time() - last_insert_ts) >= INSERT_DELAY:
                 last_insert_ts = time.time()
