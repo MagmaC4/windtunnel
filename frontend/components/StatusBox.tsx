@@ -52,7 +52,7 @@ export default function StatusBox(){
     return (
         <div>
             <p className="text-2xl text-gray-500"> Wind Tunnel Status </p>
-            <p className={`text-8xl font-bold ${textColor}`}> {status} </p>
+            <p className={`text-6xl md:text-8xl font-bold ${textColor}`}> {status} </p>
         </div>
 
     );

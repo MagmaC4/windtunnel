@@ -87,6 +87,7 @@ export default function RPMGauge({value} : RPMGaugeProps){
             ref={canvasRef}
             width={250}
             height={180}
+            className="w-[140px] h-[120px] md:w-[250px] md:h-[180px]"
         />
         
     )

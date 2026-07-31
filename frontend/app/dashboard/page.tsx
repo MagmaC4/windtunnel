@@ -19,6 +19,7 @@ export default function Dashboard() {
 return (
     // display Dashboard as grid of these cards
     <div className="grid grid-cols-2  gap-4 min-h-screen p-4">
+        {/* Hide chart when screen is small */}
         <Card className="col-span-2 lg:col-span-1"><StatusBox /></Card>
         <Card className="hidden lg:block"><RechartCard /></Card>
 
