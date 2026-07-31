@@ -43,8 +43,7 @@ export default function RechartCard() {
       height: '100%',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center',
-      focus: 'outline-none'
+      justifyContent: 'center'
     }}
   >
     <div style={{ width: '90%', height: '90%' }}>
