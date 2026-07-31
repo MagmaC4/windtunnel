@@ -44,6 +44,7 @@ export default function RechartCard() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      focus: 'outline-none'
     }}
   >
     <div style={{ width: '90%', height: '90%' }}>
@@ -73,8 +74,10 @@ export default function RechartCard() {
             type="linear"
             dataKey="rpm"
             stroke="#818cf8"
+            strokeWidth={3}
             dot={false}
             activeDot={{ stroke: '#fff' }}
+            isAnimationActive={false}
           />
         </LineChart>
       </ResponsiveContainer>
