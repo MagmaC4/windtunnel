@@ -30,7 +30,7 @@ return (
 
         <div className="flex flex-col gap-4">
             <GaugeCard title="Temperature (C)" value={temp} decimalPlaces={2} GaugeComponent={TempGauge} />
-            <GaugeCard title="Pressure (MPa)" value={pressure} decimalPlaces={4} GaugeComponent={PressureGauge} />
+            <GaugeCard title="Pressure (MPa)" value={pressure} decimalPlaces={5} GaugeComponent={PressureGauge} />
         </div>
     </div>
   );
