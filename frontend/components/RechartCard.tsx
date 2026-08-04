@@ -57,7 +57,7 @@ export default function RechartCard() {
           <YAxis
             width={40}
             stroke="#666"
-            domain={[0, 800]}
+            domain={[0, 1000]}
           />
           <Tooltip
             cursor={{ stroke: '#ccc' }}
