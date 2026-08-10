@@ -16,10 +16,6 @@ export default function Footer(){
                     <Link href="/contact" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
                         Contact
                     </Link>
-
-                    <Link href="/submit" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">
-                        Submit
-                    </Link>
                 </nav>
             </div>
         </footer>
