@@ -1,12 +1,17 @@
+import {useState} from "react"
 import Chart from "@/components/Chart"
 import ChartButtons from "@/components/ChartButtons"
 
 export default function ChartContainer(){
-    return(
-        <div className="h-full flex flex-col gap-2">
-            <ChartButtons/>
-            <Chart/>
+    const [selectedRange, setSelectedRange] = useState("1H")
 
+    return(
+        <div className="h-full">
+            <ChartButtons
+                selectedRange={selectedRange}
+                onSelect={setSelectedRange}
+            />
+            <Chart/>
         </div>
     );
 }

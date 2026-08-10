@@ -1,4 +1,9 @@
-export default function Button(){
+type ButtonProps = {
+    label : string;
+    className : string;
+}
+
+export default function Button({label, className} : ButtonProps){
     const handleClick = () => {
         alert("Button clicked");
     }
@@ -6,8 +11,8 @@ export default function Button(){
     return(
         
         <button onClick={handleClick} 
-        className="bg-indigo-400 rounded text-white w-full hover:cursor-pointer">
-            1D
+        className={`bg-indigo-400 rounded text-white font-bold w-full hover:cursor-pointer ${className}`}>
+            {label}
         </button>
         
     );
