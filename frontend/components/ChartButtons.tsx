@@ -7,7 +7,7 @@ export default function ChartButtons(){
 
 
     return(
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-1">
             <Button/>
             <Button/>
             <Button/>
