@@ -38,7 +38,7 @@ export default function PressureGauge({value} : PressureGaugeProps){
                 staticLabels: {
                     font: "10px sans-serif",  // Specifies font
                     labels: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],  // Print labels at these values
-                    color: "#ffffff",  // Optional: Label text color
+                    color: "#808080",  // Optional: Label text color
                     fractionDigits: 1  // Optional: Numerical precision. 0=round off.
                 },
                 limitMax: false,     // If false, max value increases automatically if value > maxValue

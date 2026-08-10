@@ -38,7 +38,7 @@ export default function RPMGauge({value} : RPMGaugeProps){
                 staticLabels: {
                     font: "10px sans-serif",  // Specifies font
                     labels: [0, 250, 500, 750, 1000, 1250, 1500],  // Print labels at these values
-                    color: "#ffffff",  // Optional: Label text color
+                    color: "#808080",  // Optional: Label text color
                     fractionDigits: 0  // Optional: Numerical precision. 0=round off.
                 },
                 limitMax: false,     // If false, max value increases automatically if value > maxValue

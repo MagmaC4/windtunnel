@@ -38,7 +38,7 @@ export default function WindGauge({value} : WindGaugeProps){
                 staticLabels: {
                     font: "10px sans-serif",  // Specifies font
                     labels: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],  // Print labels at these values
-                    color: "#ffffff",  // Optional: Label text color
+                    color: "#808080",  // Optional: Label text color
                     fractionDigits: 0  // Optional: Numerical precision. 0=round off.
                 },
                 limitMax: false,     // If false, max value increases automatically if value > maxValue
