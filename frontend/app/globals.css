@@ -2,10 +2,10 @@
 
 /* LIGHT MODE */
 :root {
-  --background: #ffffff;
+  --background: var(--color-neutral-100);
   --foreground: var(--color-neutral-600);
   --title: var(--color-gray-500);
-  --card: var(--color-neutral-100);
+  --card: #ffffff;
   --footer: var(--color-neutral-200);
   --footer-border: var(--color-neutral-300);
 
