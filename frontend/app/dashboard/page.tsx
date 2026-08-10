@@ -4,9 +4,11 @@
 
 import { useSensorData } from "@/hooks/useSensorData";
 import Card from "@/components/Card";
-import GaugeCard from "@/components/GaugeCard";
 import StatusBox from "@/components/StatusBox";
-import RechartCard from "@/components/RechartCard";
+import ChartContainer from "@/components/ChartContainer"
+import GaugeCard from "@/components/GaugeCard";
+
+// gauges
 import RPMGauge from "@/components/gauges/RPMGauge";
 import WindGauge from "@/components/gauges/WindGauge";
 import TempGauge from "@/components/gauges/TempGauge";
@@ -21,7 +23,7 @@ return (
     <div className="grid grid-cols-2  gap-4 min-h-screen p-4">
         {/* Hide chart when screen is small */}
         <Card className="col-span-2 lg:col-span-1"><StatusBox /></Card>
-        <Card className="col-span-2 lg:col-span-1 min-h-[350px]"><RechartCard /></Card>
+        <Card className="col-span-2 lg:col-span-1 min-h-[350px]"><ChartContainer/></Card>
 
         <div className="flex flex-col gap-4">
             <GaugeCard title="Motor RPM" value={rpm} decimalPlaces={0} GaugeComponent={RPMGauge} />

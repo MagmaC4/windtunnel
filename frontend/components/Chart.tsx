@@ -3,7 +3,7 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import {useEffect, useState} from "react";
 
-export default function RechartCard() {
+export default function Chart() {
 
     const [chartData, setChartData] = useState([]);
 
