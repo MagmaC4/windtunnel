@@ -1,4 +1,5 @@
 type ButtonProps = {
+    key : string;
     label : string;
     className : string;
 }
