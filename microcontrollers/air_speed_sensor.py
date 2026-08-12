@@ -16,7 +16,7 @@ while True:
     scaled_value = (raw_value / 65535) * pcf_in_0.reference_voltage
     air_speed = 18.9 * (scaled_value ** 0.484)
     print("Pin 0: %0.5fV" % (scaled_value))
-    print("Air Speed: %0.5fV" % (air_speed))
+    print("Air Speed: %0.5fm/s" % (air_speed))
     print("")
     time.sleep(0.5)
 
