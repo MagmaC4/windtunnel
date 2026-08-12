@@ -18,7 +18,7 @@ while True:
     scaled_value = (raw_value / 65535) * pcf_in_0.reference_voltage
 
     # ON / OFF Determination
-    windTunnelOn = (scaled_value > 0.01)
+    windTunnelOn = (scaled_value > 0.1)
     if windTunnelOn:
         print(f"Tunnel is on, voltage: {scaled_value:.2f}V")
     else:
