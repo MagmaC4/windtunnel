@@ -20,9 +20,9 @@ while True:
     # ON / OFF Determination
     windTunnelOn = (scaled_value != 0)
     if windTunnelOn:
-        print("Tunnel is on")
+        print(f"Tunnel is on, voltage: {scaled_value:.2f}V")
     else:
-        print("Tunnel is off")
+        print(f"Tunnel is off, voltage: {scaled_value:.2f}V")
 
     time.sleep(0.5)
 
