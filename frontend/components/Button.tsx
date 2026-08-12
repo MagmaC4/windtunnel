@@ -1,6 +1,6 @@
 type ButtonProps = {
-    key : string;
     label : string;
+    onClick: () => void;
     className : string;
 }
 
