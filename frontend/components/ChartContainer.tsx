@@ -4,15 +4,19 @@ import ChartButtons from "@/components/ChartButtons"
 
 export default function ChartContainer(){
     const [selectedRange, setSelectedRange] = useState("LIVE")
+    const [selectedMetric, setSelectedMetric] = useState("RPM")
 
     return(
         <div className="h-full">
             <ChartButtons
                 selectedRange={selectedRange}
-                onSelect={setSelectedRange}
+                selectedMetric={selectedMetric}
+                onRangeSelect={setSelectedRange}
+                onMetricSelect={setSelectedMetric}
             />
             <Chart
                 selectedRange={selectedRange}
+                selectedMetric={selectedMetric}
             />
         </div>
     );

@@ -3,6 +3,20 @@
 import pool from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server";
 
+const METRIC_DATABASE_TABLE: Record<string, string> = {
+    "RPM": "motor_rpm",
+    "AIR SPEED": "pitot_tube",
+    "TEMP": "thermometer",
+    "PRESSURE": "thermometer"
+}
+
+const METRIC_NAME: Record<string, string> = {
+    "RPM": "rpm",
+    "AIR SPEED": "airspeed",
+    "TEMP": "temp_celsius",
+    "PRESSURE": "pressure_hpa"
+}
+
 // convert selected range to ms
 const RANGE_MS: Record<string, number> = {
   "LIVE": 60 * 1000,
@@ -32,8 +46,11 @@ const BUCKET: Record<string, string> = {
 export async function GET(req: NextRequest){
     // convert selected range to ms
     const range = req.nextUrl.searchParams.get("range") ?? "1H";
+    const metric = req.nextUrl.searchParams.get("metric") ?? "RPM";
     const ms = RANGE_MS[range];
     const bucket = BUCKET[range];
+    const database_table = METRIC_DATABASE_TABLE[metric];
+    const name = METRIC_NAME[metric];
 
     // reject invalid ranges
     if (!ms || !bucket) {
@@ -44,8 +61,8 @@ export async function GET(req: NextRequest){
 
     try {
         const query = `
-            SELECT date_trunc($1, timestamp) AS timestamp, AVG(rpm) AS rpm
-            FROM motor_rpm
+            SELECT date_trunc($1, timestamp) AS timestamp, AVG(${name}) AS ${name}
+            FROM ${database_table}
             WHERE timestamp >= $2
             GROUP BY date_trunc($1, timestamp)
             ORDER BY date_trunc($1, timestamp) ASC
@@ -55,7 +72,7 @@ export async function GET(req: NextRequest){
 
         const chartData = result.rows.map(row => ({
             timestamp: row.timestamp,
-            rpm: Number(row.rpm), // AVG returns a string in pg, cast to number
+            value: Number(row[name]), // AVG returns a string in pg, cast to number
         }));
 
         return NextResponse.json(chartData);

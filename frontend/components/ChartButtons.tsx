@@ -4,23 +4,36 @@
 import Button from "@/components/Button";
 
 const TIME_RANGES = ["LIVE", "1H", "1D", "1W", "1MO", "6MO", "1Y"];
+const METRICS = ["RPM", "AIR SPEED", "TEMP", "PRESSURE"]
 
-type ChartButtonProps = {
+type ChartButtonsProps = {
     selectedRange: string;
+    selectedMetric: string;
     onSelect: (range: string) => void;
 }
 
-export default function ChartButtons({selectedRange, onSelect} : ChartButtonProps){
+export default function ChartButtons({selectedRange, selectedMetric, onRangeSelect, onMetricSelect} : ChartButtonsProps){
 
     return(
-        <div className="flex flex-row gap-1 mx-6">
-            {/* Add 1 button for every time range */}
-            {TIME_RANGES.map(r => (
-                <Button key={r} label={r} onClick={() => onSelect(r)}
-                    /* Change button appearance for selected range*/
-                    className={selectedRange === r ? "bg-indigo-500" : ""}
-                />
-            ))}
+        <div className="flex flex-col gap-1 mx-6">
+            <div className="flex flex-row gap-1">
+                {/* Add 1 button for every time range */}
+                {METRICS.map(r => (
+                    <Button key={r} label={r} onClick={() => onMetricSelect(r)}
+                        /* Change button appearance for selected range */
+                        className={selectedMetric === r ? "bg-indigo-500" : ""}
+                    />
+                ))}
+            </div>
+            <div className="flex flex-row gap-1">
+                {/* Add 1 button for every time range */}
+                {TIME_RANGES.map(r => (
+                    <Button key={r} label={r} onClick={() => onRangeSelect(r)}
+                        /* Change button appearance for selected range */
+                        className={selectedRange === r ? "bg-indigo-500" : ""}
+                    />
+                ))}
+            </div>
         </div>
     );
 }

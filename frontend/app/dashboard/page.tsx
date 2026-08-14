@@ -23,7 +23,7 @@ return (
     <div className="grid grid-cols-2  gap-4 min-h-screen p-4">
         {/* Hide chart when screen is small */}
         <Card className="col-span-2 lg:col-span-1"><StatusBox /></Card>
-        <Card className="col-span-2 lg:col-span-1 min-h-[350px]"><ChartContainer/></Card>
+        <Card className="col-span-2 lg:col-span-1 min-h-[375px]"><ChartContainer/></Card>
 
         <div className="flex flex-col gap-4">
             <GaugeCard title="Motor RPM" value={rpm} decimalPlaces={0} GaugeComponent={RPMGauge} />

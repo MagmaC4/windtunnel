@@ -5,11 +5,28 @@ import {useEffect, useState} from "react";
 
 type ChartProps = {
     selectedRange : string;
+    selectedMetric : string;
 }
 
-export default function Chart({selectedRange} : ChartProps) {
+const MIN_METRIC = {
+    "RPM": 0,
+    "AIR SPEED": 0,
+    "TEMP": 15,
+    "PRESSURE": 90
+}
+
+const MAX_METRIC = {
+    "RPM": 1000,
+    "AIR SPEED": 100,
+    "TEMP": 35,
+    "PRESSURE": 1000
+}
+
+export default function Chart({selectedRange, selectedMetric} : ChartProps) {
 
     const [chartData, setChartData] = useState([]);
+    const [chartMin, setChartMin] = useState(0);
+    const [chartMax, setChartMax] = useState(1000);
 
 
     // pull new chart data when selectedRange changes
@@ -22,7 +39,7 @@ export default function Chart({selectedRange} : ChartProps) {
       const fetchData = async () => {
           try {
             // get data points from api route, pass selectedRange as a search parameter
-            const res = await fetch(`/api/chart/rpm?range=${selectedRange}`);
+            const res = await fetch(`/api/chart/rpm?range=${selectedRange}&metric=${selectedMetric}`);
             // error check, zero-out data points
             if (!res.ok) {
               console.error(`Failed to load chart data: ${res.status} ${res.statusText}`);
@@ -32,6 +49,8 @@ export default function Chart({selectedRange} : ChartProps) {
             // apply new data points to chart
             const data = await res.json();
             setChartData(data);
+            setChartMin(MIN_METRIC[selectedMetric]);
+            setChartMax(MAX_METRIC[selectedMetric]);
           }
             // error check, zero-out data points
             catch (err) {
@@ -51,7 +70,7 @@ export default function Chart({selectedRange} : ChartProps) {
         ignore = true; // runs when selectedRange changes again or component unmounts
         if (interval) {clearInterval(interval);}
       };
-    }, [selectedRange]);
+    }, [selectedRange, selectedMetric]);
 
     // change timestamp information depending on range length
     function formatTimestamp(t: string, range: string) {
@@ -89,7 +108,7 @@ export default function Chart({selectedRange} : ChartProps) {
           <YAxis
             width={40}
             stroke="#666"
-            domain={[0, 1000]}
+            domain={[chartMin, chartMax]}
           />
           <Tooltip
             cursor={{ stroke: '#ccc' }}
@@ -101,10 +120,10 @@ export default function Chart({selectedRange} : ChartProps) {
             labelStyle={{ color: '#000' }}   // the top line (your "name"/timestamp)
             itemStyle={{ color: '#000' }}    // each data line below (e.g. "rpm: 4200")
           />
-          <Legend />
+
           <Line
             type="linear"
-            dataKey="rpm"
+            dataKey="value"
             stroke="#818cf8"
             strokeWidth={3}
             dot={false}
