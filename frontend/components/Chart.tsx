@@ -8,14 +8,14 @@ type ChartProps = {
     selectedMetric : string;
 }
 
-const MIN_METRIC = {
+const MIN_METRIC : Record<string, number> = {
     "RPM": 0,
     "AIR SPEED": 0,
     "TEMP": 15,
     "PRESSURE": 90
 }
 
-const MAX_METRIC = {
+const MAX_METRIC : Record<string, number> = {
     "RPM": 1000,
     "AIR SPEED": 100,
     "TEMP": 35,

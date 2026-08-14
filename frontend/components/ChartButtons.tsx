@@ -9,7 +9,8 @@ const METRICS = ["RPM", "AIR SPEED", "TEMP", "PRESSURE"]
 type ChartButtonsProps = {
     selectedRange: string;
     selectedMetric: string;
-    onSelect: (range: string) => void;
+    onRangeSelect: (range: string) => void;
+    onMetricSelect: (range: string) => void;
 }
 
 export default function ChartButtons({selectedRange, selectedMetric, onRangeSelect, onMetricSelect} : ChartButtonsProps){
