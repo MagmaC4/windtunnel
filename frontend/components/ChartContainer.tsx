@@ -3,7 +3,7 @@ import Chart from "@/components/Chart"
 import ChartButtons from "@/components/ChartButtons"
 
 export default function ChartContainer(){
-    const [selectedRange, setSelectedRange] = useState("1H")
+    const [selectedRange, setSelectedRange] = useState("LIVE")
 
     return(
         <div className="h-full">
@@ -11,7 +11,9 @@ export default function ChartContainer(){
                 selectedRange={selectedRange}
                 onSelect={setSelectedRange}
             />
-            <Chart/>
+            <Chart
+                selectedRange={selectedRange}
+            />
         </div>
     );
 }

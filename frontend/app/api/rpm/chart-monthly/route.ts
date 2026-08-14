@@ -1,6 +1,6 @@
 import pool from "@/lib/db"
 
-// This api route gets the 60 most recent entries from the database
+// DEPRECATED
 
 export async function GET(){
     try {
