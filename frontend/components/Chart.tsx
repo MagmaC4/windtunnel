@@ -3,38 +3,89 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import {useEffect, useState} from "react";
 
-export default function Chart() {
+type ChartProps = {
+    selectedRange : string;
+    selectedMetric : string;
+}
+
+const MIN_METRIC : Record<string, number> = {
+    "RPM": 0,
+    "AIR SPEED": 0,
+    "TEMP": 15,
+    "PRESSURE": 90
+}
+
+const MAX_METRIC : Record<string, number> = {
+    "RPM": 1000,
+    "AIR SPEED": 100,
+    "TEMP": 35,
+    "PRESSURE": 1000
+}
+
+export default function Chart({selectedRange, selectedMetric} : ChartProps) {
 
     const [chartData, setChartData] = useState([]);
+    const [chartMin, setChartMin] = useState(0);
+    const [chartMax, setChartMax] = useState(1000);
 
-    // Define API Call function
-    // Call function on an interval
+
+    // pull new chart data when selectedRange changes
     useEffect(() => {
-        // function that
-        const fetchChartRpm = async () => {
+      // ignore flag is to prevent old data from displaying when user clicks buttons fast
+      let ignore = false;
+      let interval: ReturnType<typeof setInterval> | undefined;
 
-            try {
-                const res = await fetch('/api/rpm/chart-recent');
-                // check for api errors
-                if (!res.ok) {
-                  console.error('Failed to load chart data');
-                  setChartData([]);
-                  return;
-                }
-                const data = await res.json();
-                setChartData(data);
-            } catch (error) {
-                console.error('Network error:', error);
-                setChartData([]);
-
+      // API CALL WITH RANGE AS A SEARCH PARAMETER
+      const fetchData = async () => {
+          try {
+            // get data points from api route, pass selectedRange as a search parameter
+            const res = await fetch(`/api/chart/rpm?range=${selectedRange}&metric=${selectedMetric}`);
+            // error check, zero-out data points
+            if (!res.ok) {
+              console.error(`Failed to load chart data: ${res.status} ${res.statusText}`);
+              setChartData([]);
+              return;
             }
-        }
+            // apply new data points to chart
+            const data = await res.json();
+            setChartData(data);
+            setChartMin(MIN_METRIC[selectedMetric]);
+            setChartMax(MAX_METRIC[selectedMetric]);
+          }
+            // error check, zero-out data points
+            catch (err) {
+            console.error("Network error fetching chart data", err);
+            setChartData([]);
+          }
+      };
+      //
+      fetchData();
 
-        fetchChartRpm(); // first fetch
-        const interval = setInterval(fetchChartRpm, 1000) // repeat api calls
-        return () => clearInterval(interval) // cleanup on unmount
+      // Update live data every 1 second
+      if (selectedRange === "LIVE"){
+        interval = setInterval(fetchData, 1000);
+      }
 
-    }, []);
+      return () => {
+        ignore = true; // runs when selectedRange changes again or component unmounts
+        if (interval) {clearInterval(interval);}
+      };
+    }, [selectedRange, selectedMetric]);
+
+    // change timestamp information depending on range length
+    function formatTimestamp(t: string, range: string) {
+      const date = new Date(t);
+      // less than a day
+      if (range === "LIVE" || range === "5M" || range === "1H") {
+        return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+      }
+      // 1 day - 1 week
+      if (range === "24H" || range === "1D" || range === "1W") {
+        return date.toLocaleString();
+      }
+      // anything a month or longer
+      return new Date(t).toLocaleDateString()
+    }
 
   return (
   <div
@@ -53,11 +104,11 @@ export default function Chart() {
           margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" vertical={false} />
-          <XAxis dataKey="name" stroke="#666" interval={47}/>
+          <XAxis dataKey="timestamp" stroke="#666" interval={47} tick={false}/>
           <YAxis
             width={40}
             stroke="#666"
-            domain={[0, 1000]}
+            domain={[chartMin, chartMax]}
           />
           <Tooltip
             cursor={{ stroke: '#ccc' }}
@@ -65,13 +116,14 @@ export default function Chart() {
               backgroundColor: '#fff',
               borderColor: '#ccc',
             }}
+            labelFormatter={(t) => formatTimestamp(t, selectedRange)}
             labelStyle={{ color: '#000' }}   // the top line (your "name"/timestamp)
             itemStyle={{ color: '#000' }}    // each data line below (e.g. "rpm: 4200")
           />
-          <Legend />
+
           <Line
             type="linear"
-            dataKey="rpm"
+            dataKey="value"
             stroke="#818cf8"
             strokeWidth={3}
             dot={false}

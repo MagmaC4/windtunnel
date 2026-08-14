@@ -1,5 +1,6 @@
 import pool from "@/lib/db"
 
+// Live view of chart
 // This api route gets the 60 most recent entries from the database
 
 export async function GET(){
