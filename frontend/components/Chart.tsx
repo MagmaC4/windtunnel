@@ -116,7 +116,7 @@ export default function Chart({selectedRange, selectedMetric} : ChartProps) {
               backgroundColor: '#fff',
               borderColor: '#ccc',
             }}
-            labelFormatter={(t) => formatTimestamp(t, selectedRange)}
+            labelFormatter={(t) => typeof t === 'string' ? formatTimestamp(t, selectedRange) : ''}
             labelStyle={{ color: '#000' }}   // the top line (your "name"/timestamp)
             itemStyle={{ color: '#000' }}    // each data line below (e.g. "rpm: 4200")
           />
