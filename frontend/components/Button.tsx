@@ -4,15 +4,16 @@ type ButtonProps = {
     className : string;
 }
 
-export default function Button({label, className} : ButtonProps){
+export default function Button({label, onClick, className} : ButtonProps){
+    // testing button function
     const handleClick = () => {
         alert("Button clicked");
     }
 
     return(
         
-        <button onClick={handleClick} 
-        className={`bg-indigo-400 rounded text-white font-bold w-full hover:cursor-pointer ${className}`}>
+        <button onClick={onClick}
+        className={`bg-indigo-400 rounded text-white font-bold w-full hover:cursor-pointer transition-colors duration-200 ${className}`}>
             {label}
         </button>
         
