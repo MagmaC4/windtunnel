@@ -34,7 +34,7 @@ export async function GET() {
         const result = await pool.query(
             'SELECT air_speed as latest FROM pitot ORDER BY timestamp DESC LIMIT 1'
         );
-        data.air_speed = result.rows[0].latest;
+        data.airSpeed = result.rows[0].latest;
     }
     catch (error) {
         console.error('Failed to fetch latest air speed:', error);
