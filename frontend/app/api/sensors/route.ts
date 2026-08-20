@@ -29,18 +29,28 @@ export async function GET() {
         // data.rpm stays 0 as fallback
     }
 
+    // latest air speed query
+    try {
+        const result = await pool.query(
+            'SELECT air_speed as latest FROM pitot ORDER BY timestamp DESC LIMIT 1'
+        );
+        data.air_speed = result.rows[0].latest;
+    }
+    catch (error) {
+        console.error('Failed to fetch latest air speed:', error);
+    }
+
     // latest temperature query
-        try {
-            const result = await pool.query(
-                'SELECT temp_celsius, pressure_hpa FROM thermometer ORDER BY timestamp DESC LIMIT 1'
-            );
-            data.temp = result.rows[0].temp_celsius;
-            data.pressure = result.rows[0].pressure_hpa / 10000;
-        }
-        catch (error) {
-            console.error('Failed to fetch latest temperature:', error);
-            // data.rpm stays 0 as fallback
-        }
+    try {
+        const result = await pool.query(
+            'SELECT temp_celsius, pressure_hpa FROM thermometer ORDER BY timestamp DESC LIMIT 1'
+        );
+        data.temp = result.rows[0].temp_celsius;
+        data.pressure = result.rows[0].pressure_hpa / 10000;
+    }
+    catch (error) {
+        console.error('Failed to fetch latest temperature:', error);
+    }
 
 
 
