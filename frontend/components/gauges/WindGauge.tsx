@@ -37,7 +37,7 @@ export default function WindGauge({value} : WindGaugeProps){
                 fontSize: 42,
                 staticLabels: {
                     font: "10px sans-serif",  // Specifies font
-                    labels: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],  // Print labels at these values
+                    labels: [0, 10, 20, 30, 40, 50],  // Print labels at these values
                     color: "#808080",  // Optional: Label text color
                     fractionDigits: 0  // Optional: Numerical precision. 0=round off.
                 },
@@ -64,7 +64,7 @@ export default function WindGauge({value} : WindGaugeProps){
 
             // create gauge object
             const gauge = new Gauge(canvasRef.current).setOptions(opts);
-            gauge.maxValue = 100;
+            gauge.maxValue = 50;
             gauge.setMinValue(0);
             gauge.animationSpeed = 32;
             gauge.set(0);
