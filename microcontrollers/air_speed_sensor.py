@@ -1,38 +1,99 @@
+# Read closed return Wind Tunnel panel's voltage and convert it to air speed
+# Send air speed (m/s) data to database every 1 second(s)
+
+import psycopg2                 # PostgreSQL
 import time
-import board
+import sys                      # exit early
+import os                       # .env
+from dotenv import load_dotenv  # .env
+import board                                        # ADC
+import adafruit_pcf8591.pcf8591 as PCF              # ADC
+from adafruit_pcf8591.analog_in import AnalogIn     # ADC
+from adafruit_pcf8591.analog_out import AnalogOut   # ADC
 
-import adafruit_pcf8591.pcf8591 as PCF
-from adafruit_pcf8591.analog_in import AnalogIn
-from adafruit_pcf8591.analog_out import AnalogOut
+# ==============================================================================
+# Helper Functions
 
-i2c = board.I2C()
-pcf = PCF.PCF8591(i2c)
+# Use quadratic formula to calculate air speed from wind tunnel panel voltage
+# a, b, and c were found by measuring voltage and air speed,
+# and plotting them to find a polynomial line of best fit
+# Thanks to Dan Reuter for help with this!
+def voltage_to_air_speed(scaled_voltage):
+    a = 2.78 * (10 ** -3)
+    b = 1.27 * (10 ** -3)
+    c = -7.95 * (10 ** -3) - scaled_voltage
+    air_speed = (-b + (b ** 2 - 4 * a * c) ** 0.5) / (2 * a)
+    # Formula is not entirely accurate: zero out air speed if voltage is zero
+    if scaled_voltage <= 0:
+        air_speed = 0
+    return air_speed
 
-# Using Analog Pin 0 on the Analog to Digital Converter (ADC) chip
-pcf_in_0 = AnalogIn(pcf, PCF.A0)
-
-
-while True:
+def insert_db():
     # Read in voltage from ADC, reference voltage is likely 5V
     raw_value = pcf_in_0.value
     scaled_value = (raw_value / 65535) * pcf_in_0.reference_voltage
 
-    # Use quadratic formula to calculate air speed from wind tunnel panel voltage
-    # a, b, and c were found by measuring voltage and air speed,
-    # and plotting them to find a polynomial line of best fit
-    a = 2.78 * (10 ** -3)
-    b = 1.27 * (10 ** -3)
-    c = -7.95 * (10 ** -3) - scaled_value
-    air_speed = (-b + (b ** 2 - 4 * a * c) ** 0.5) / (2 * a)
+    # Calculate air speed from analog voltage
+    air_speed = voltage_to_air_speed(scaled_value)
 
-    # Formula is not entirely accurate:
-    # Need to zero out air speed when voltage is read as zero
-    if scaled_value <= 0:
-        air_speed = 0
+    # Insert air speed into database
+    sql_insert = "INSERT INTO pitot (voltage, air_speed) VALUES (%s, %s)"
+    print(f"Inserting air speed readings into table...")
+    cursor.execute(sql_insert, (scaled_value, air_speed)) # execute insert command
+    connection.commit() # save changes to database
 
-    print("Pin 0: %0.5fV" % (scaled_value))
-    print("Air Speed: %0.5fm/s" % (air_speed))
-    print("")
-    time.sleep(0.5)
+
+# ==============================================================================
+# Setup SQL connection
+try:
+    # Load .env file as os.getenv
+    if not load_dotenv():
+        raise Exception("Failed to load .env file")
+
+    # Connect to existing database
+    print("Connecting to PostgreSQL database...")
+    connection = psycopg2.connect(
+        host=os.getenv("DB_HOST"),
+        dbname=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        port=os.getenv("DB_PORT")
+    )
+
+    # Create a cursor to perform database operations
+    cursor = connection.cursor()
+
+except Exception as error:
+    print("Error while connecting to PostgreSQL", error)
+    sys.exit(1)  # stop the program, error code 1
+
+# ==============================================================================
+# Setup Analog to Digital Converter
+i2c = board.I2C()
+pcf = PCF.PCF8591(i2c)
+pcf_in_0 = AnalogIn(pcf, PCF.A0) # Use Analog Pin 0 on the Analog to Digital Converter (ADC) chip
+
+
+# ==============================================================================
+# Main Loop
+try:
+    while True:
+        try:
+            insert_db()
+            time.sleep(1)
+        except Exception as error:
+            print("Error while reading from sensor or inserting to database: ", error)
+            connection.rollback()
+
+except KeyboardInterrupt:
+    print("Stopped by user")
+
+# Close out all connections
+finally:
+    if cursor:
+        cursor.close()
+    if connection:
+        connection.close()
+        print("PostgreSQL connection closed")
 
 
