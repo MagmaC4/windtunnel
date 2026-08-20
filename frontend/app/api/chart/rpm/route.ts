@@ -5,14 +5,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 const METRIC_DATABASE_TABLE: Record<string, string> = {
     "RPM": "motor_rpm",
-    "AIR SPEED": "pitot_tube",
+    "AIR SPEED": "pitot",
     "TEMP": "thermometer",
     "PRESSURE": "thermometer"
 }
 
 const METRIC_NAME: Record<string, string> = {
     "RPM": "rpm",
-    "AIR SPEED": "airspeed",
+    "AIR SPEED": "air_speed",
     "TEMP": "temp_celsius",
     "PRESSURE": "pressure_hpa"
 }

@@ -27,7 +27,7 @@ return (
 
         <div className="flex flex-col gap-4">
             <GaugeCard title="Motor RPM" value={rpm} decimalPlaces={0} GaugeComponent={RPMGauge} />
-            <GaugeCard title="Air Speed (m/s)" value={airSpeed} decimalPlaces={2} GaugeComponent={WindGauge} />
+            <GaugeCard title="Air Speed (m/s)" value={airSpeed} decimalPlaces={3} GaugeComponent={WindGauge} />
         </div>
 
         <div className="flex flex-col gap-4">
