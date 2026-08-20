@@ -4,7 +4,7 @@
 import Button from "@/components/Button";
 
 const TIME_RANGES = ["LIVE", "1H", "1D", "1W", "1MO", "6MO", "1Y"];
-const METRICS = ["RPM", "AIR SPEED", "TEMP", "PRESSURE"]
+const METRICS = ["RPM", "Air Speed", "Temp", "Pressure"]
 
 type ChartButtonsProps = {
     selectedRange: string;

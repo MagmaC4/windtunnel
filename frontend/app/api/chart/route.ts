@@ -1,20 +1,20 @@
-// app/api/chart/rpm/route.ts
+// app/api/chart/route.ts
 
 import pool from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server";
 
 const METRIC_DATABASE_TABLE: Record<string, string> = {
     "RPM": "motor_rpm",
-    "AIR SPEED": "pitot",
-    "TEMP": "thermometer",
-    "PRESSURE": "thermometer"
+    "Air Speed": "pitot",
+    "Temp": "thermometer",
+    "Pressure": "thermometer"
 }
 
 const METRIC_NAME: Record<string, string> = {
     "RPM": "rpm",
-    "AIR SPEED": "air_speed",
-    "TEMP": "temp_celsius",
-    "PRESSURE": "pressure_hpa"
+    "Air Speed": "air_speed",
+    "Temp": "temp_celsius",
+    "Pressure": "pressure_hpa"
 }
 
 // convert selected range to ms

@@ -10,16 +10,16 @@ type ChartProps = {
 
 const MIN_METRIC : Record<string, number> = {
     "RPM": 0,
-    "AIR SPEED": 0,
-    "TEMP": 15,
-    "PRESSURE": 950
+    "Air Speed": 0,
+    "Temp": 15,
+    "Pressure": 950
 }
 
 const MAX_METRIC : Record<string, number> = {
     "RPM": 1000,
-    "AIR SPEED": 100,
-    "TEMP": 35,
-    "PRESSURE": 1000
+    "Air Speed": 100,
+    "Temp": 35,
+    "Pressure": 1000
 }
 
 export default function Chart({selectedRange, selectedMetric} : ChartProps) {
@@ -39,7 +39,7 @@ export default function Chart({selectedRange, selectedMetric} : ChartProps) {
       const fetchData = async () => {
           try {
             // get data points from api route, pass selectedRange as a search parameter
-            const res = await fetch(`/api/chart/rpm?range=${selectedRange}&metric=${selectedMetric}`);
+            const res = await fetch(`/api/chart?range=${selectedRange}&metric=${selectedMetric}`);
             // error check, zero-out data points
             if (!res.ok) {
               console.error(`Failed to load chart data: ${res.status} ${res.statusText}`);
