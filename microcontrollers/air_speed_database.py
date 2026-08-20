@@ -23,8 +23,9 @@ def voltage_to_air_speed(scaled_voltage):
     b = 1.27 * (10 ** -3)
     c = -7.95 * (10 ** -3) - scaled_voltage
     air_speed = (-b + (b ** 2 - 4 * a * c) ** 0.5) / (2 * a)
-    # Formula is not entirely accurate: zero out air speed if voltage is zero
-    if scaled_voltage <= 0:
+    # Formula is not entirely accurate: zero out air speed if voltage is low
+    min_voltage = 0.02
+    if scaled_voltage <= min_voltage:
         air_speed = 0
     return air_speed
 
