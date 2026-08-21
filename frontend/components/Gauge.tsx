@@ -93,7 +93,7 @@ function getUnitConfig(label?: string): GaugeUnitConfig {
 }
 
 // Static visual options that never change (angle, colors, ticks, etc).
-function buildGaugeOptions(labels: number[], fractionDigits, divisions) {
+function buildGaugeOptions(labels: number[], fractionDigits : number, divisions : number[]) {
   return {
     angle: -0.2,
     lineWidth: 0.2,
