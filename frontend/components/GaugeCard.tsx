@@ -1,5 +1,6 @@
 import Card from "./Card";
 import Button from "./Button";
+import Gauge from "./Gauge";
 import {ComponentType} from "react";
 import {useState} from "react";
 
@@ -12,11 +13,10 @@ type GaugeCardProps = {
     title: string;
     value: number;
     decimalPlaces : number;
-    GaugeComponent: ComponentType<{value : number}>;
     units?: Unit[]; // some metrics do not have units (RPM)
 }
 
-export default function GaugeCard({ title, value, decimalPlaces, GaugeComponent, units}: GaugeCardProps) {
+export default function GaugeCard({ title, value, decimalPlaces, units}: GaugeCardProps) {
     // calculate value based on selected unit
     const [unitIndex, setUnitIndex] = useState(0);
     const activeUnit = units?.[unitIndex];
@@ -32,7 +32,7 @@ export default function GaugeCard({ title, value, decimalPlaces, GaugeComponent,
                     {units && activeUnit &&
                         (<Button label={activeUnit.label}
                                 onClick={() => setUnitIndex((i) => (i + 1) % units.length)}
-                                className="min-w-10 bg-zinc-700 border border-zinc-500"/>
+                                className="min-w-10 bg-zinc-700 border border-zinc-500 px-1"/>
                         )
                     }
                 </div>
@@ -42,7 +42,7 @@ export default function GaugeCard({ title, value, decimalPlaces, GaugeComponent,
                     {displayValue % 1 == 0 ? displayValue : displayValue.toFixed(decimalPlaces)}
                 </p>
             </div>
-            <GaugeComponent value={displayValue} />
+            <Gauge value={displayValue} activeUnit={activeUnit} />
         </Card>
     );
 }
