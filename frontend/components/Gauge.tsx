@@ -60,8 +60,8 @@ const UNIT_CONFIG: Record<string, GaugeUnitConfig> = {
   },
   F: {
     min: 0,
-    max: 212,
-    labels: [0, 40, 80, 120, 160, 200],
+    max: 100,
+    labels: [0, 20, 40, 60, 80, 100],
     divisions: [5, 4],
     fractionDigits: 0,
   },
@@ -150,9 +150,11 @@ export default function Gauge({ value, activeUnit }: GaugeProps) {
       gauge.setMinValue(min);
       gauge.maxValue = max;
       gauge.animationSpeed = DEFAULT_ANIMATION_SPEED;
-      gauge.set(0); // start at the current value, no 0-sweep on first paint
+      gauge.set(min); // start at the current value, no 0-sweep on first paint
 
       gaugeRef.current = gauge;
+
+      console.log("created gauge with value: " + value + " min: " + min + " max: " + max + " labels " + labels);
     });
   }, []);
 
@@ -164,19 +166,20 @@ export default function Gauge({ value, activeUnit }: GaugeProps) {
     const { min, max, labels, divisions, fractionDigits } = getUnitConfig(activeUnit?.label);
 
     const gauge = gaugeRef.current;
-    const restoreSpeed = gauge.animationSpeed;
-
     gauge.setMinValue(min);
     gauge.maxValue = max;
     gauge.setOptions(buildGaugeOptions(labels, fractionDigits, divisions)); // resets gauge's internal value to 0
 
     // Jump straight to the correct value instead of visibly animating 0 -> value.
     // This prevents a visual bug when editing gauge options on the fly
+    const restoreSpeed = gauge.animationSpeed;
     gauge.animationSpeed = 1;
     gauge.set(value === 0 ? 0.0001 : value);
     requestAnimationFrame(() => {
       gauge.animationSpeed = restoreSpeed;
     });
+
+    console.log("updated gauge");
   }, [activeUnit]);
 
   // ===================================================================
