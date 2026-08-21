@@ -42,7 +42,7 @@ export default function GaugeCard({ title, value, decimalPlaces, GaugeComponent,
                     {displayValue % 1 == 0 ? displayValue : displayValue.toFixed(decimalPlaces)}
                 </p>
             </div>
-            <GaugeComponent value={displayValue} />
+            <GaugeComponent value={displayValue} activeUnit={activeUnit} />
         </Card>
     );
 }
