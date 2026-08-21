@@ -29,7 +29,7 @@ export default function GaugeCard({ title, value, decimalPlaces, GaugeComponent,
                 <div className="flex flex-row gap-2">
                     <p className="text-2xl text-center lg:text-left text-title text-nowrap">{title}</p>
                     {/* Only show units button if units are supplied in props */}
-                    {units &&
+                    {units && activeUnit &&
                         (<Button label={activeUnit.label}
                                 onClick={() => setUnitIndex((i) => (i + 1) % units.length)}
                                 className="min-w-10 bg-zinc-700 border border-zinc-500"/>
