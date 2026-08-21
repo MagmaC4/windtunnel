@@ -22,7 +22,7 @@ export default function ChartButtons({selectedRange, selectedMetric, onRangeSele
                 {METRICS.map(r => (
                     <Button key={r} label={r} onClick={() => onMetricSelect(r)}
                         /* Change button appearance for selected range */
-                        className={selectedMetric === r ? "bg-indigo-500" : ""}
+                        className={selectedMetric === r ? "bg-indigo-500" : "bg-indigo-400"}
                     />
                 ))}
             </div>
@@ -31,7 +31,7 @@ export default function ChartButtons({selectedRange, selectedMetric, onRangeSele
                 {TIME_RANGES.map(r => (
                     <Button key={r} label={r} onClick={() => onRangeSelect(r)}
                         /* Change button appearance for selected range */
-                        className={selectedRange === r ? "bg-indigo-500" : ""}
+                        className={selectedRange === r ? "bg-indigo-500" : "bg-indigo-400"}
                     />
                 ))}
             </div>
