@@ -1,4 +1,4 @@
-// Dashboard Pressure Gauge
+// Dashboard Gauge
 
 "use client"; // gauge requires browser, so use client here
 
@@ -9,33 +9,91 @@ type Unit = {
   convert: (value: number) => number;
 };
 
-type PressureGaugeProps = {
+type GaugeProps = {
   value: number;
-  activeUnit: Unit;
+  activeUnit?: Unit;
 };
 
-// Gauge parameters per unit
-const UNIT_MIN: Record<string, number> = {
-  default: 0,
-  MPa: 0,
-  kPa: 0,
-  atm: 0,
+type GaugeUnitConfig = {
+  min: number;
+  max: number;
+  labels: number[];
+  divisions: [major: number, minor: number];
+  fractionDigits: number;
 };
-const UNIT_MAX: Record<string, number> = {
-  default: 100,
-  MPa: 1.0,
-  kPa: 1000,
-  atm: 1.0,
+
+const UNIT_CONFIG: Record<string, GaugeUnitConfig> = {
+  default: {
+    min: 0,
+    max: 100,
+    labels: [0, 20, 40, 60, 80, 100],
+    divisions: [5, 4],
+    fractionDigits: 0,
+  },
+  RPM: {
+    min: 0,
+    max: 1500,
+    labels: [0, 250, 500, 750, 1000, 1250, 1500],
+    divisions: [6, 3],
+    fractionDigits: 0,
+  },
+  "m/s": {
+    min: 0,
+    max: 50,
+    labels: [0, 10, 20, 30, 40, 50],
+    divisions: [5, 4],
+    fractionDigits: 0,
+  },
+  mph: {
+    min: 0,
+    max: 120,
+    labels: [0, 20, 40, 60, 80, 100, 120],
+    divisions: [6, 4],
+    fractionDigits: 0,
+  },
+  C: {
+    min: 0,
+    max: 100,
+    labels: [0, 20, 40, 60, 80, 100],
+    divisions: [5, 4],
+    fractionDigits: 0,
+  },
+  F: {
+    min: 0,
+    max: 212,
+    labels: [0, 40, 80, 120, 160, 200],
+    divisions: [5, 4],
+    fractionDigits: 0,
+  },
+  MPa: {
+    min: 0.095,
+    max: 0.105,
+    labels: [0.095, 0.097, 0.099, 0.101, 0.103, 0.105],
+    divisions: [5, 3],
+    fractionDigits: 3,
+  },
+  kPa: {
+    min: 95,
+    max: 105,
+    labels: [95, 97, 99, 101, 103, 105],
+    divisions: [5, 3],
+    fractionDigits: 0,
+  },
+  atm: {
+    min: 0.94,   // corrected: was inconsistent with MPa/kPa range above
+    max: 1.04,
+    labels: [0.94, 0.96, 0.98, 1.0, 1.02, 1.04],
+    divisions: [5, 3],
+    fractionDigits: 2,
+  },
 };
-const UNIT_LABELS: Record<string, number[]> = {
-  default: [0, 20, 40, 60, 80, 100],
-  MPa: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-  kPa: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000],
-  atm: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-};
+
+function getUnitConfig(label?: string): GaugeUnitConfig {
+  return UNIT_CONFIG[label ?? "default"] ?? UNIT_CONFIG["default"];
+}
 
 // Static visual options that never change (angle, colors, ticks, etc).
-function buildGaugeOptions(labels: number[]) {
+function buildGaugeOptions(labels: number[], fractionDigits, divisions) {
   return {
     angle: -0.2,
     lineWidth: 0.2,
@@ -50,7 +108,7 @@ function buildGaugeOptions(labels: number[]) {
       font: "10px sans-serif",
       labels,
       color: "#808080",
-      fractionDigits: 1,
+      fractionDigits,
     },
     limitMax: false,
     limitMin: false,
@@ -60,11 +118,11 @@ function buildGaugeOptions(labels: number[]) {
     generateGradient: true,
     highDpiSupport: true,
     renderTicks: {
-      divisions: 5,
+      divisions: divisions[0],
       divWidth: 1.1,
       divLength: 0.7,
       divColor: "#333333",
-      subDivisions: 4,
+      subDivisions: divisions[1],
       subLength: 0.5,
       subWidth: 0.6,
       subColor: "#666666",
@@ -74,7 +132,7 @@ function buildGaugeOptions(labels: number[]) {
 
 const DEFAULT_ANIMATION_SPEED = 32;
 
-export default function PressureGauge({ value, activeUnit }: PressureGaugeProps) {
+export default function Gauge({ value, activeUnit }: GaugeProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const gaugeRef = useRef<any>(null);
 
@@ -86,15 +144,13 @@ export default function PressureGauge({ value, activeUnit }: PressureGaugeProps)
     import("gaugeJS").then(({ Gauge }) => {
       if (!canvasRef.current) return;
 
-      const min = UNIT_MIN[activeUnit.label] ?? UNIT_MIN["default"];
-      const max = UNIT_MAX[activeUnit.label] ?? UNIT_MAX["default"];
-      const labels = UNIT_LABELS[activeUnit.label] ?? UNIT_LABELS["default"];
+      const { min, max, labels, divisions, fractionDigits } = getUnitConfig(activeUnit?.label);
 
-      const gauge = new Gauge(canvasRef.current).setOptions(buildGaugeOptions(labels));
+      const gauge = new Gauge(canvasRef.current).setOptions(buildGaugeOptions(labels, fractionDigits, divisions));
       gauge.setMinValue(min);
       gauge.maxValue = max;
       gauge.animationSpeed = DEFAULT_ANIMATION_SPEED;
-      gauge.set(value); // start at the current value, no 0-sweep on first paint
+      gauge.set(0); // start at the current value, no 0-sweep on first paint
 
       gaugeRef.current = gauge;
     });
@@ -105,21 +161,19 @@ export default function PressureGauge({ value, activeUnit }: PressureGaugeProps)
   useEffect(() => {
     if (!gaugeRef.current) return;
 
-    const min = UNIT_MIN[activeUnit.label] ?? UNIT_MIN["default"];
-    const max = UNIT_MAX[activeUnit.label] ?? UNIT_MAX["default"];
-    const labels = UNIT_LABELS[activeUnit.label] ?? UNIT_LABELS["default"];
+    const { min, max, labels, divisions, fractionDigits } = getUnitConfig(activeUnit?.label);
 
     const gauge = gaugeRef.current;
     const restoreSpeed = gauge.animationSpeed;
 
     gauge.setMinValue(min);
     gauge.maxValue = max;
-    gauge.setOptions(buildGaugeOptions(labels)); // resets gauge's internal value to 0
+    gauge.setOptions(buildGaugeOptions(labels, fractionDigits, divisions)); // resets gauge's internal value to 0
 
     // Jump straight to the correct value instead of visibly animating 0 -> value.
     // This prevents a visual bug when editing gauge options on the fly
     gauge.animationSpeed = 1;
-    gauge.set(value);
+    gauge.set(value === 0 ? 0.0001 : value);
     requestAnimationFrame(() => {
       gauge.animationSpeed = restoreSpeed;
     });
