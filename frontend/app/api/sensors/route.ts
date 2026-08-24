@@ -20,7 +20,7 @@ export async function GET() {
     // latest rpm query
     try {
         const result = await pool.query(
-            'SELECT rpm as latest FROM motor_rpm ORDER BY timestamp DESC LIMIT 1'
+            'SELECT rpm as latest FROM open_tachometer ORDER BY timestamp DESC LIMIT 1'
         );
         data.rpm = result.rows[0].latest;
     }
