@@ -14,7 +14,7 @@ from dotenv import load_dotenv  # .env
 # Helper Functions
 def insert_db(rpm):
     # Insert reading into SQL Database
-    sql_insert = "INSERT INTO motor_rpm (rpm, status) VALUES (%s, %s)"
+    sql_insert = "INSERT INTO open_tachometer (rpm, status) VALUES (%s, %s)"
 
     if rpm > 0:
         status = 'Running'
