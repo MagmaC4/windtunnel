@@ -5,6 +5,8 @@ import adafruit_pcf8591.pcf8591 as PCF
 from adafruit_pcf8591.analog_in import AnalogIn
 from adafruit_pcf8591.analog_out import AnalogOut
 
+# Reads Voltage from an Analog to Digital Converter
+
 i2c = board.I2C()
 pcf = PCF.PCF8591(i2c)
   

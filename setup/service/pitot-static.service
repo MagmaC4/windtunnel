@@ -1,11 +1,11 @@
 [Unit]
-Description=Air Speed Database Service
+Description=Pitot Static (Air Speed Sensor) Database Service
 After=network.target
 
 [Service]
 User=ventus
 WorkingDirectory=/home/ventus/Projects/windtunnel/microcontrollers
-ExecStart=/usr/bin/python3 air_speed_database.py
+ExecStart=/usr/bin/python3 pitot-static.py
 Restart=always
 RestartSec=5
 

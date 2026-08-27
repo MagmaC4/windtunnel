@@ -1,0 +1,13 @@
+[Unit]
+Description=Standby (On / Off Sensor) Database Service
+After=network.target
+
+[Service]
+User=ventus
+WorkingDirectory=/home/ventus/Projects/windtunnel/microcontrollers
+ExecStart=/usr/bin/python3 standby.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

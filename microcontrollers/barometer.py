@@ -1,21 +1,17 @@
-# scraper-python.py
-# To run this script, paste `python scraper-python.py` in the terminal
-
 import requests
 from bs4 import BeautifulSoup
 
 
 def scrape():
-
-    url = 'www.example.com'
+    url = 'https://www.enet.umn.edu/auto-generated/pressure/'
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    # title = soup.select_one('h1').text
-    # print(f"Title: {title}\n")
+
     print("Entire Document")
     print(soup.prettify())
 
-
+    # title = soup.select_one('h1').text
+    # print(f"Title: {title}\n")
 
 if __name__ == '__main__':
     scrape()

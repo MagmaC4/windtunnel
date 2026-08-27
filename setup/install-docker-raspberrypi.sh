@@ -1,5 +1,5 @@
 #!/bin/bash
-# install-docker.sh
+# install-docker-raspberrypi.sh
 # Clean Docker install for a fresh Raspberry Pi (Debian / Raspberry Pi OS).
 # Uses Docker's official convenience script, which auto-detects the correct
 # distro/repo (avoids manually hardcoding Ubuntu vs Debian).

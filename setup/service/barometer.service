@@ -1,11 +1,11 @@
 [Unit]
-Description=Temperature and Pressure Database Service
+Description=Barometer (Pressure Sensor) Database Service
 After=network.target
 
 [Service]
 User=ventus
 WorkingDirectory=/home/ventus/Projects/windtunnel/microcontrollers
-ExecStart=/usr/bin/python3 thermometer_database.py
+ExecStart=/usr/bin/python3 barometer.py
 Restart=always
 RestartSec=5
 

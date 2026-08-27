@@ -1,11 +1,11 @@
 [Unit]
-Description=RPM Database Service
+Description=Tachometer (RPM Sensor) Database Service
 After=network.target
 
 [Service]
 User=ventus
 WorkingDirectory=/home/ventus/Projects/windtunnel/microcontrollers
-ExecStart=/usr/bin/python3 rpm_database.py
+ExecStart=/usr/bin/python3 tachometer.py
 Restart=always
 RestartSec=5
 
