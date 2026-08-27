@@ -20,10 +20,13 @@ Build website and run webserver
 # Microcontroller Environment
 
 Install Python3   
+(if pip install doesn't work, try python3 -m pip install)  
 ```pip install pyserial```  
 ```pip install psycopg2```  
 ```pip install python-dotenv```  
 ```pip install adafruit-circuitpython-bmp5xx```  
+```pip install requests```  
+```pip install beautifulsoup4```
 
 
 # Frontend Evnironment
