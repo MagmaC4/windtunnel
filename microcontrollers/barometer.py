@@ -4,6 +4,7 @@
 # Repeat every 5 minutes, as the website only updates that often
 
 import psycopg2                 # PostgreSQL
+from psycopg2 import sql        # PostgreSQL
 import time                     # sleep
 import sys                      # exit early
 import os                       # .env
@@ -39,10 +40,19 @@ def insert_db():
     # Gather pressure data from website
     pressure_hpa = scrape()
 
-    # Insert reading into SQL Database
-    sql_insert = "INSERT INTO closed_barometer (pressure_hpa) VALUES (%s)"
+    # Declare which wind tunnel table to insert into
+    is_closed = os.getenv("DB_CATEGORY") == "closed"
+    if is_closed:
+        TABLE_NAME = "closed_barometer"
+    else:
+        TABLE_NAME = "open_barometer"
 
-    print(f"Inserting pressure: {pressure_hpa} hpa into table...")
+    # Insert reading into SQL Database
+    sql_insert = sql.SQL("INSERT INTO {table} (pressure_hpa) VALUES (%s)").format(
+        table=sql.Identifier(TABLE_NAME)
+    )
+
+    print(f"Inserting pressure: {pressure_hpa} hpa into table: {TABLE_NAME}...")
     cursor.execute(sql_insert, (pressure_hpa,)) # execute insert command
     connection.commit() # save changes to database
 

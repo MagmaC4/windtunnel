@@ -1,6 +1,8 @@
 services:
   tachometer:
     build: .
+    environment:
+      - PYTHONUNBUFFERED=1 # this flag makes it so print statements are output instantly instead of waiting
     env_file:
       - .env
     privileged: true
@@ -9,6 +11,8 @@ services:
 
   pitot-static:
     build: .
+    environment:
+      - PYTHONUNBUFFERED=1
     env_file:
       - .env
     privileged: true
@@ -17,6 +21,8 @@ services:
 
   thermometer:
     build: .
+    environment:
+      - PYTHONUNBUFFERED=1
     env_file:
       - .env
     privileged: true
@@ -25,6 +31,8 @@ services:
 
   barometer:
     build: .
+    environment:
+      - PYTHONUNBUFFERED=1
     env_file:
       - .env
     restart: no
