@@ -1,0 +1,7 @@
+pyserial
+psycopg2-binary
+python-dotenv
+adafruit-circuitpython-bmp5xx
+adafruit-circuitpython-pcf8591
+requests
+beautifulsoup4

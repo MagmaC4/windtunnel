@@ -1,0 +1,31 @@
+services:
+  tachometer:
+    build: .
+    env_file:
+      - .env
+    privileged: true
+    restart: unless-stopped
+    command: python3 tachometer.py
+
+  pitot-static:
+    build: .
+    env_file:
+      - .env
+    privileged: true
+    restart: unless-stopped
+    command: python3 pitot-static.py
+
+  thermometer:
+    build: .
+    env_file:
+      - .env
+    privileged: true
+    restart: unless-stopped
+    command: python3 thermometer.py
+
+  barometer:
+    build: .
+    env_file:
+      - .env
+    restart: no
+    command: python3 barometer.py
