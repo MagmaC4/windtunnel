@@ -1,8 +1,11 @@
+# pitot-static.py
+# Run this file on the raspberry pi named windtunnel-2
 # Read closed return Wind Tunnel panel's voltage and convert it to air speed
 # Send air speed (m/s) data to database every 1 second(s)
 
 import psycopg2                 # PostgreSQL
-import time
+from psycopg2 import sql        # PostgreSQL
+import time                     # sleep
 import sys                      # exit early
 import os                       # .env
 from dotenv import load_dotenv  # .env
@@ -37,9 +40,19 @@ def insert_db():
     # Calculate air speed from analog voltage
     air_speed = voltage_to_air_speed(scaled_value)
 
+    # Declare which wind tunnel table to insert into (depends on .env file)
+    is_closed = os.getenv("DB_TABLE") == "closed"
+    if is_closed:
+        TABLE_NAME = "closed_pitot_static"
+    else:
+        TABLE_NAME = "open_pitot_static"
+
     # Insert air speed into database
-    sql_insert = "INSERT INTO pitot (voltage, air_speed) VALUES (%s, %s)"
-    print(f"Inserting air speed readings into table...")
+    sql_insert = psycopg2.sql.SQL("INSERT INTO {table} (voltage, air_speed) VALUES (%s, %s)").format(
+        table=psycopg2.sql.Identifier(TABLE_NAME)
+    )
+
+    print(f"Inserting air speed: {air_speed} readings into table: {TABLE_NAME}...")
     cursor.execute(sql_insert, (scaled_value, air_speed)) # execute insert command
     connection.commit() # save changes to database
 

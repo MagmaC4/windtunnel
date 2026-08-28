@@ -1,7 +1,7 @@
 # barometer.py
+# Run this file on the raspberry pi named windtunnel-2
 # Web scrape pressure off of the UMN Mechanical Engineering Pressure Page https://www.enet.umn.edu/auto-generated/pressure/
 # Insert that pressure into barometer table in windtunnel database
-# Repeat every 5 minutes, as the website only updates that often
 
 import psycopg2                 # PostgreSQL
 from psycopg2 import sql        # PostgreSQL
@@ -40,16 +40,16 @@ def insert_db():
     # Gather pressure data from website
     pressure_hpa = scrape()
 
-    # Declare which wind tunnel table to insert into
-    is_closed = os.getenv("DB_CATEGORY") == "closed"
+    # Declare which wind tunnel table to insert into (depends on .env file)
+    is_closed = os.getenv("DB_TABLE") == "closed"
     if is_closed:
         TABLE_NAME = "closed_barometer"
     else:
         TABLE_NAME = "open_barometer"
 
     # Insert reading into SQL Database
-    sql_insert = sql.SQL("INSERT INTO {table} (pressure_hpa) VALUES (%s)").format(
-        table=sql.Identifier(TABLE_NAME)
+    sql_insert = psycopg2.sql.SQL("INSERT INTO {table} (pressure_hpa) VALUES (%s)").format(
+        table=psycopg2.sql.Identifier(TABLE_NAME)
     )
 
     print(f"Inserting pressure: {pressure_hpa} hpa into table: {TABLE_NAME}...")
@@ -90,6 +90,7 @@ try:
             time.sleep(1)
         except Exception as error:
             print("Error while reading from sensor or inserting to database: ", error)
+            time.sleep(2)
             connection.rollback()
 
 except KeyboardInterrupt:
