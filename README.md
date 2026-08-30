@@ -1,10 +1,21 @@
-# Windtunnel Aerospace Engineering and Mechanics Project
+# Wind Tunnel Dashboard
+### UMN AEM Department Project
 
 This project serves to provide a dashboard for the Wind Tunnel in the University of Minnesota Aerospace Engineering building.
 
 RaspberryPi's are placed in the Wind Tunnel as tachometers, thermometers, and barometers.
 
 They send sensor data to a database. The website reads from this database and displays the information.
+
+The website is [magmac4.com](magmac4.com).
+
+# Utilities
+
+- **PostgreSQL** for the database
+- **Tailscale** for SSHing into Raspberry Pis
+- **Docker** for running the sensors
+- **Next.js** for building the website
+- **nginx** for hosting the website
 
 # How to run website
 Navigate to Next.js folder  
@@ -23,11 +34,12 @@ Build website and run webserver
 # How to run sensors
 There are four types of sensors:
 - **tachometer** = motor rpm
-- **pitot**-static = air speed
+- **pitot-static** = air speed
 - **thermometer** = air temperature
 - **barometer** = air pressure
 
-Make sure you run the sensor on a raspberry pi with attached **microcontrollers** and **.env file**.
+Make sure you run the sensor on a raspberry pi with attached **microcontrollers** and **.env file**.  
+Connect to the raspberry pi by using **tailscale** to **ssh**.  
 
 Navigate to microcontrollers folder  
 ```cd microcontrollers```   
@@ -64,9 +76,18 @@ Install Node.js
 
 # Things that could go wrong
 
-- Database is down (runs on my personal computer)
+- Database is down (runs on my personal computer and home wifi)
 - RaspberryPi is not sending new data to database
   - reboot RaspberryPi, sometimes works
 - RaspberryPi is not connected to the internet
   - need IoT device registration, maybe it expired. In this case, use ethernet cable.
 
+# Computer Responsibilities
+
+| Computer Name (not actual hostnames) | Responsibility                                                 | Location                        |
+|--------------------------------------|----------------------------------------------------------------|---------------------------------|
+| homeserver                           | database<br/>nginx web server                                  | My Home                         |
+| raspberrypi                          | closed_tachometer<br/>closed_barometer                         | Closed Return Wind Tunnel Motor |
+| raspberrypi-2                        | closed_pitot-static <br/>closed_thermometer<br/>closed_standby | Closed Return Wind Tunnel Front Panel | 
+| raspberrypi-3                        | open_tachometer<br/>open_barometer                             | Open Return Wind Tunnel Motor |
+| raspberrypi-4                        | N/A                                                            | N/A |

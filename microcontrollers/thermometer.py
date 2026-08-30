@@ -1,3 +1,5 @@
+# thermometer.py
+# Run this file on the raspberry pi named windtunnel-2
 # Insert temperature, pressure, and altitude into database
 # Table Name: thermometer
 # Table Columns: id, timestamp, temp_celsius, temp_fahrenheit, pressure_hpa, altitude

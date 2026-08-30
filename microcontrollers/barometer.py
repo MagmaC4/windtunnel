@@ -1,5 +1,5 @@
 # barometer.py
-# Run this file on the raspberry pi named windtunnel-2
+# Run this file on the raspberry pi named windtunnel
 # Web scrape pressure off of the UMN Mechanical Engineering Pressure Page https://www.enet.umn.edu/auto-generated/pressure/
 # Insert that pressure into barometer table in windtunnel database
 

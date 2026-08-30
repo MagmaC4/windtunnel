@@ -1,3 +1,6 @@
+# standby.py
+# Run this file on the raspberry pi named windtunnel-2
+
 import time
 import board
 
