@@ -3,7 +3,6 @@
 
 import time
 import board
-
 import adafruit_pcf8591.pcf8591 as PCF
 from adafruit_pcf8591.analog_in import AnalogIn
 from adafruit_pcf8591.analog_out import AnalogOut

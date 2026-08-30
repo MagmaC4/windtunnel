@@ -48,6 +48,7 @@ services:
       - PYTHONUNBUFFERED=1
     env_file:
       - .env
+    privileged: true
     restart: unless-stopped
     command: python3 standby.py
     profiles: [ "windtunnel-2" ]
