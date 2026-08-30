@@ -10,6 +10,16 @@ services:
     command: python3 tachometer.py
     profiles: ["windtunnel"]
 
+  barometer:
+    build: .
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
+    restart: unless-stopped
+    command: python3 barometer.py
+    profiles: [ "windtunnel" ]
+
   pitot-static:
     build: .
     environment:
@@ -31,16 +41,6 @@ services:
     restart: unless-stopped
     command: python3 thermometer.py
     profiles: ["windtunnel-2"]
-
-  barometer:
-    build: .
-    environment:
-      - PYTHONUNBUFFERED=1
-    env_file:
-      - .env
-    restart: unless-stopped
-    command: python3 barometer.py
-    profiles: ["windtunnel"]
 
   standby:
     build: .
