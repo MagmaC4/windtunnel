@@ -1,29 +1,19 @@
-# Database Attempt 7
-# Insert into PostgreSQL database
-# Use Raspberry Pi to measure RPM
+# tachometer.py
+# Run this file on the raspberry pi named windtunnel
+# Insert the windtunnel motor RPM into PostgreSQL database
+# Use IR Sensor to measure RPM
 
 
 import psycopg2                 # PostgreSQL
-import time 
+from psycopg2 import sql        # PostgreSQL
+import time                     # sleep
 import sys                      # exit early
 import os                       # .env
 from dotenv import load_dotenv  # .env
-from gpiozero import DigitalInputDevice
+from gpiozero import DigitalInputDevice # IR sensor
 
 # ==============================================================================
 # Helper Functions
-def insert_db(rpm):
-    # Insert reading into SQL Database
-    sql_insert = "INSERT INTO motor_rpm (rpm, status) VALUES (%s, %s)"
-
-    if rpm > 0:
-        status = 'Running'
-    else:
-        status = 'Off'
-
-    print(f"Inserting {rpm} into table...")
-    cursor.execute(sql_insert, (rpm, status)) # execute insert command
-    connection.commit() # save changes to database
 
 def get_rpm() -> int:
     # Time since measurement attempt started
@@ -59,6 +49,28 @@ def get_rpm() -> int:
         raise Exception(f"\nRPM limit of {RPM_LIMIT} exceeded: {rpm}")
 
     return int(rpm)
+
+def insert_db(rpm):
+    # Declare which wind tunnel table to insert into (depends on .env file)
+    is_closed = os.getenv("DB_TABLE") == "closed"
+    if is_closed:
+        TABLE_NAME = "closed_tachometer"
+    else:
+        TABLE_NAME = "open_tachometer"
+
+    # Insert reading into SQL Database
+    sql_insert = psycopg2.sql.SQL("INSERT INTO motor_rpm (rpm, status) VALUES (%s, %s)").format(
+        table=psycopg2.sql.Identifier(TABLE_NAME)
+    )
+
+    if rpm > 0:
+        status = 'Running'
+    else:
+        status = 'Off'
+
+    print(f"Inserting rpm: {rpm} into table: {TABLE_NAME}...")
+    cursor.execute(sql_insert, (rpm, status)) # execute insert command
+    connection.commit() # save changes to database
 
 # ==============================================================================
 # Setup SQL connection
@@ -97,7 +109,7 @@ ir_sensor = DigitalInputDevice(IR_PIN, pull_up=True, bounce_time=0.005)
 # ==============================================================================
 # Main Loop 
 
-INSERT_DELAY = 0.2      # seconds to delay inserts 
+INSERT_DELAY = 1      # seconds to delay inserts
 last_insert_ts = 0      # last insert timestamp
 last_rpm = 0
 

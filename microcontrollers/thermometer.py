@@ -3,6 +3,7 @@
 # Table Columns: id, timestamp, temp_celsius, temp_fahrenheit, pressure_hpa, altitude
 
 import psycopg2                 # PostgreSQL
+from psycopg2 import sql        # PostgreSQL
 import time                     # sleep
 import sys                      # exit early
 import os                       # .env
@@ -25,10 +26,19 @@ def insert_db():
         # end insert early if data is not ready
         return
 
-    # Insert reading into SQL Database
-    sql_insert = "INSERT INTO thermometer (temp_celsius, temp_fahrenheit, pressure_hpa, altitude_m) VALUES (%s, %s, %s, %s)"
+    # Declare which wind tunnel table to insert into (depends on .env file)
+    is_closed = os.getenv("DB_TABLE") == "closed"
+    if is_closed:
+        TABLE_NAME = "closed_thermometer"
+    else:
+        TABLE_NAME = "open_thermometer"
 
-    print(f"Inserting thermometer readings into table...")
+    # Insert reading into SQL Database
+    sql_insert = psycopg2.sql.SQL("INSERT INTO thermometer (temp_celsius, temp_fahrenheit) VALUES (%s, %s)").format(
+        table=psycopg2.sql.Identifier(TABLE_NAME)
+    )
+
+    print(f"Inserting temperature celsius: {temp_c} readings into table: {TABLE_NAME}...")
     cursor.execute(sql_insert, (temp_c, temp_f, pressure, altitude)) # execute insert command
     connection.commit() # save changes to database
 
@@ -73,7 +83,7 @@ try:
     while True:
         try:
             insert_db()
-            time.sleep(0.2)
+            time.sleep(1)
         except Exception as error:
             print("Error while reading from sensor or inserting to database: ", error)
             connection.rollback()
