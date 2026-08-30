@@ -1,13 +1,14 @@
 [Unit]
 Description=Tachometer (RPM Sensor) Database Service
-After=network.target
+Requires=docker.service
+After=docker.service
 
 [Service]
-User=ventus
+Type=oneshot
+RemainAfterExit=yes
 WorkingDirectory=/home/ventus/Projects/windtunnel/microcontrollers
-ExecStart=/usr/bin/python3 tachometer.py
-Restart=always
-RestartSec=5
+ExecStart=/usr/bin/docker compose up -d tachometer
+ExecStop=/usr/bin/docker compose down tachometer
 
 [Install]
 WantedBy=multi-user.target

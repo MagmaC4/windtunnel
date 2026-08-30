@@ -50,6 +50,9 @@ Create Docker build (using docker-compose.yml)
 Choose which sensor to run (ex: tachometer)  
 ```docker compose up tachometer```
 
+View sensor's text output (ex: tachometer)  
+```docker compose logs -f tachometer```  
+
 # Microcontroller Python Libraries
 
 Install Python3   
