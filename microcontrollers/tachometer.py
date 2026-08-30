@@ -59,7 +59,7 @@ def insert_db(rpm):
         TABLE_NAME = "open_tachometer"
 
     # Insert reading into SQL Database
-    sql_insert = psycopg2.sql.SQL("INSERT INTO motor_rpm (rpm, status) VALUES (%s, %s)").format(
+    sql_insert = psycopg2.sql.SQL("INSERT INTO {table} (rpm, status) VALUES (%s, %s)").format(
         table=psycopg2.sql.Identifier(TABLE_NAME)
     )
 

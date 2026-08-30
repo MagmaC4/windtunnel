@@ -34,7 +34,7 @@ def insert_db():
         TABLE_NAME = "open_thermometer"
 
     # Insert reading into SQL Database
-    sql_insert = psycopg2.sql.SQL("INSERT INTO thermometer (temp_celsius, temp_fahrenheit) VALUES (%s, %s)").format(
+    sql_insert = psycopg2.sql.SQL("INSERT INTO {table} (temp_celsius, temp_fahrenheit) VALUES (%s, %s)").format(
         table=psycopg2.sql.Identifier(TABLE_NAME)
     )
 
