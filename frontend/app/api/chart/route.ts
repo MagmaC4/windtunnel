@@ -4,10 +4,10 @@ import pool from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server";
 
 const METRIC_DATABASE_TABLE: Record<string, string> = {
-    "RPM": "motor_rpm",
-    "Air Speed": "pitot",
-    "Temp": "thermometer",
-    "Pressure": "thermometer"
+    "RPM": "closed_tachometer",
+    "Air Speed": "closed_pitot_static",
+    "Temp": "closed_thermometer",
+    "Pressure": "closed_barometer"
 }
 
 const METRIC_NAME: Record<string, string> = {
