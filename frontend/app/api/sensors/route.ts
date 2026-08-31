@@ -12,17 +12,22 @@ export async function GET() {
     // return zeros as placeholder api call
     var data : SensorData = {
         rpm: 0,
+        rpm_ts: null,
         airSpeed: 0,
+        airSpeed_ts: null,
         temp: 0,
+        temp_ts: null,
         pressure: 0,
+        pressure_ts: null,
     }
 
     // latest rpm query
     try {
         const result = await pool.query(
-            'SELECT rpm as latest FROM closed_tachometer ORDER BY timestamp DESC LIMIT 1'
+            'SELECT rpm, timestamp FROM closed_tachometer ORDER BY timestamp DESC LIMIT 1'
         );
-        data.rpm = result.rows[0].latest;
+        data.rpm = result.rows[0].rpm;
+        data.rpm_ts = result.rows[0].timestamp;
     }
     catch (error) {
         console.error('Failed to fetch latest RPM:', error);
@@ -32,9 +37,10 @@ export async function GET() {
     // latest air speed query
     try {
         const result = await pool.query(
-            'SELECT air_speed as latest FROM closed_pitot_static ORDER BY timestamp DESC LIMIT 1'
+            'SELECT air_speed, timestamp FROM closed_pitot_static ORDER BY timestamp DESC LIMIT 1'
         );
-        data.airSpeed = result.rows[0].latest;
+        data.airSpeed = result.rows[0].air_speed;
+        data.airSpeed_ts = result.rows[0].timestamp
     }
     catch (error) {
         console.error('Failed to fetch latest air speed:', error);
@@ -43,10 +49,10 @@ export async function GET() {
     // latest temperature query
     try {
         const result = await pool.query(
-            'SELECT temp_celsius, pressure_hpa FROM closed_thermometer ORDER BY timestamp DESC LIMIT 1'
+            'SELECT temp_celsius, timestamp FROM closed_thermometer ORDER BY timestamp DESC LIMIT 1'
         );
         data.temp = result.rows[0].temp_celsius;
-        data.pressure = result.rows[0].pressure_hpa / 10000;
+        data.temp_ts = result.rows[0].timestamp;
     }
     catch (error) {
         console.error('Failed to fetch latest temperature:', error);
@@ -55,12 +61,13 @@ export async function GET() {
     // latest pressure query
         try {
             const result = await pool.query(
-                'SELECT pressure_hpa FROM closed_barometer ORDER BY timestamp DESC LIMIT 1'
+                'SELECT pressure_hpa, timestamp FROM closed_barometer ORDER BY timestamp DESC LIMIT 1'
             );
-            data.pressure = result.rows[0].pressure_hpa / 10000;
+            data.pressure = result.rows[0].pressure_hpa;
+            data.pressure_ts = result.rows[0].timestamp;
         }
         catch (error) {
-            console.error('Failed to fetch latest temperature:', error);
+            console.error('Failed to fetch latest pressure:', error);
         }
 
 

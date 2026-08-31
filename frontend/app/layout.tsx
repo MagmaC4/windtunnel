@@ -29,6 +29,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const debug = false;
+  const debugClassName = debug ? "[&_*]:outline [&_*]:outline-1 [&_*]:outline-red-500/50" : "";
+
   return (
     <html
       lang="en"
@@ -36,11 +40,17 @@ export default function RootLayout({
     >
           <body className="min-h-screen flex flex-col">
             <MaintenanceHeader/> {/* Display Maintenance Notification */}
-            <main className="flex-1">
-                {children}
-            </main>
+
+            {/* debug class name makes a red outline for all elements*/}
+            <div className={debugClassName}>{
+                <main className="flex-1">
+                    {children}
+                </main>
+            }</div>
+
             <Footer/> {/* Navigation Bar */}
           </body>
     </html>
+
   );
 }

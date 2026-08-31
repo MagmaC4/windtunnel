@@ -9,28 +9,28 @@ import ChartContainer from "@/components/ChartContainer"
 import GaugeCard from "@/components/GaugeCard";
 
 const RPM_UNITS = [
-    { label: 'RPM', convert: (v: number) => v }
+    { label: 'RPM', convert: (v: number) => v, decimalPlaces: 0}
 ];
 
 const AIR_SPEED_UNITS = [
-    { label: 'm/s', convert: (v: number) => v },
-    { label: 'mph', convert: (v: number) => v * 2.23694 }
+    { label: 'm/s', convert: (v: number) => v, decimalPlaces: 3},
+    { label: 'mph', convert: (v: number) => v * 2.23694, decimalPlaces: 3}
 ];
 
 const TEMP_UNITS = [
-    { label: 'C', convert: (v: number) => v },
-    { label: 'F', convert: (v: number) => v * 9 / 5 + 32 }
+    { label: 'C', convert: (v: number) => v, decimalPlaces: 2},
+    { label: 'F', convert: (v: number) => v * 9 / 5 + 32, decimalPlaces: 2}
 ];
 
 const PRESSURE_UNITS = [
-    { label: 'MPa', convert: (v: number) => v },
-    { label: 'kPa', convert: (v: number) => v * 1000 },
-    { label: 'atm', convert: (v: number) => v * 9.86923 }
+    { label: 'kPa', convert: (v: number) => v / 10, decimalPlaces: 2},
+    { label: 'MPa', convert: (v: number) => v / 10000, decimalPlaces: 5},
+    { label: 'atm', convert: (v: number) => v / 1013.25, decimalPlaces: 4}
 ];
 
 export default function Dashboard() {
     // update sensor values using api function (aka hook)
-    const { rpm, airSpeed, temp, pressure } = useSensorData();
+    const { rpm, rpm_ts, airSpeed, airSpeed_ts, temp, temp_ts, pressure, pressure_ts} = useSensorData();
 
 return (
     // display Dashboard as grid of cards
@@ -42,14 +42,14 @@ return (
 
         {/* RPM and Air Speed Gauges */}
         <div className="flex flex-col gap-4">
-            <GaugeCard title="Motor" value={rpm} decimalPlaces={0} units={RPM_UNITS}/>
-            <GaugeCard title="Air Speed" value={airSpeed} decimalPlaces={3} units={AIR_SPEED_UNITS}/>
+            <GaugeCard title="Motor" value={rpm} ts={rpm_ts} units={RPM_UNITS}/>
+            <GaugeCard title="Air Speed" value={airSpeed} ts={airSpeed_ts} units={AIR_SPEED_UNITS}/>
         </div>
 
         {/* Temperature and Pressure Gauges */}
         <div className="flex flex-col gap-4">
-            <GaugeCard title="Temperature" value={temp} decimalPlaces={2} units={TEMP_UNITS}/>
-            <GaugeCard title="Pressure" value={pressure} decimalPlaces={5} units={PRESSURE_UNITS}/>
+            <GaugeCard title="Temperature" value={temp} ts={temp_ts} units={TEMP_UNITS}/>
+            <GaugeCard title="Pressure" value={pressure} ts={pressure_ts} units={PRESSURE_UNITS}/>
         </div>
     </div>
   );
