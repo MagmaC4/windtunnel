@@ -4,10 +4,10 @@ import pool from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server";
 
 const METRIC_DATABASE_TABLE: Record<string, string> = {
-    "RPM": "closed_tachometer",
-    "Air Speed": "closed_pitot_static",
-    "Temp": "closed_thermometer",
-    "Pressure": "closed_barometer"
+    "RPM": "tachometer",
+    "Air Speed": "pitot_static",
+    "Temp": "thermometer",
+    "Pressure": "barometer"
 }
 
 const METRIC_NAME: Record<string, string> = {
@@ -45,6 +45,7 @@ const BUCKET: Record<string, string> = {
 
 export async function GET(req: NextRequest){
     // convert selected range to ms
+    const prefix = req.nextUrl.searchParams.get("prefix") ?? "closed";
     const range = req.nextUrl.searchParams.get("range") ?? "1H";
     const metric = req.nextUrl.searchParams.get("metric") ?? "RPM";
     const ms = RANGE_MS[range];
@@ -57,12 +58,20 @@ export async function GET(req: NextRequest){
         return NextResponse.json({ error: "Invalid range" }, { status: 400 });
     }
 
+    // reject invalid prefixes
+    if (prefix !== "open" && prefix !== "closed") {
+        return NextResponse.json(
+            { error: "Invalid prefix" },
+            { status: 400 }
+        );
+    }
+
     const since = new Date(Date.now() - ms);
 
     try {
         const query = `
             SELECT date_trunc($1, timestamp) AS timestamp, AVG(${name}) AS ${name}
-            FROM ${database_table}
+            FROM ${prefix}_${database_table}
             WHERE timestamp >= $2
             GROUP BY date_trunc($1, timestamp)
             ORDER BY date_trunc($1, timestamp) ASC

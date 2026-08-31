@@ -2,6 +2,7 @@
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import {useEffect, useState} from "react";
+import { usePathname } from "next/navigation";
 
 type ChartProps = {
     selectedRange : string;
@@ -28,6 +29,12 @@ export default function Chart({selectedRange, selectedMetric} : ChartProps) {
     const [chartMin, setChartMin] = useState(0);
     const [chartMax, setChartMax] = useState(1000);
 
+    // determine which table prefix to use based on url
+    const pathname = usePathname();
+    const prefix = pathname.includes("/open-return")
+      ? "open"
+      : "closed";
+
 
     // pull new chart data when selectedRange changes
     useEffect(() => {
@@ -39,7 +46,7 @@ export default function Chart({selectedRange, selectedMetric} : ChartProps) {
       const fetchData = async () => {
           try {
             // get data points from api route, pass selectedRange as a search parameter
-            const res = await fetch(`/api/chart?range=${selectedRange}&metric=${selectedMetric}`);
+            const res = await fetch(`/api/chart?prefix=${prefix}&range=${selectedRange}&metric=${selectedMetric}`);
             // error check, zero-out data points
             if (!res.ok) {
               console.error(`Failed to load chart data: ${res.status} ${res.statusText}`);

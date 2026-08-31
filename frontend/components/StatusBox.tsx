@@ -1,6 +1,7 @@
 "use client";
 
 import {useState, useEffect} from "react";
+import { usePathname } from "next/navigation";
 
 export default function StatusBox(){
 
@@ -8,13 +9,19 @@ export default function StatusBox(){
     const [status, setStatus] = useState("Off");
     const [textColor, setTextColor] = useState("text-gray-400");
 
+    // determine which table prefix to use based on url
+    const pathname = usePathname();
+    const prefix = pathname.includes("/open-return")
+      ? "open"
+      : "closed";
+
     // constantly fetch the latest rpm reading to detect status
     useEffect(() => {
 
         // function to fetch status
         const fetchStatus = async () => {
             try {
-                const res = await fetch("/api/status")
+                const res = await fetch(`/api/status?prefix=${prefix}`)
                 const json = await res.json();
                 setStatus(json.status);
             }

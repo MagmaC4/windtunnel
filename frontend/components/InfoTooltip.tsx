@@ -57,7 +57,7 @@ export default function InfoTooltip({ts} : InfoTooltipProps){
     function isOutdated(timestamp: string) : boolean {
         const diffMs = Date.now() - new Date(timestamp).getTime();
         const seconds = Math.floor(diffMs / 1000);
-        return seconds > 10 ? true : false;
+        return (seconds > 10 || Number.isNaN(diffMs)) ? true : false;
     }
 
     return(

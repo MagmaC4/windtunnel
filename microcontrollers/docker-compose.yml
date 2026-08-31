@@ -8,7 +8,7 @@ services:
     privileged: true
     restart: unless-stopped
     command: python3 tachometer.py
-    profiles: ["windtunnel"]
+    profiles: ["windtunnel", "windtunnel-3"]
 
   barometer:
     build: .
@@ -18,7 +18,7 @@ services:
       - .env
     restart: unless-stopped
     command: python3 barometer.py
-    profiles: [ "windtunnel" ]
+    profiles: [ "windtunnel", "windtunnel-3"]
 
   pitot-static:
     build: .

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 interface SensorData {
   rpm: number;
@@ -25,9 +26,15 @@ export function useSensorData(): SensorData {
     pressure_ts: "",
   });
 
+  // determine which table prefix to use based on url
+  const pathname = usePathname();
+  const prefix = pathname.includes("/open-return")
+      ? "open"
+      : "closed";
+
   useEffect(() => {
     const interval = setInterval(async () => {
-      const res = await fetch("/api/sensors");
+      const res = await fetch(`/api/sensors?prefix=${prefix}`);
       const json: SensorData = await res.json();
       setData(json);
     }, 1000);
