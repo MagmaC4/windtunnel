@@ -1,0 +1,12 @@
+[Unit]
+Description=Windtunnel Website
+After=network.target
+
+[Service]
+User=magmac4
+WorkingDirectory=/home/magmac4/Projects/windtunnel/frontend
+ExecStart=/usr/bin/npm run start
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

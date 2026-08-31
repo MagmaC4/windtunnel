@@ -1,27 +1,74 @@
-# Database Attempt 7
-# Insert into PostgreSQL database
-# Use Raspberry Pi to measure RPM
+# tachometer.py
+# Run this file on the raspberry pi named windtunnel
+# Insert the windtunnel motor RPM into PostgreSQL database
+# Use IR Sensor to measure RPM
 
 
 import psycopg2                 # PostgreSQL
-from rpm_sensor import get_rpm  # Raspberry Pi
-import time 
+from psycopg2 import sql        # PostgreSQL
+import time                     # sleep
 import sys                      # exit early
 import os                       # .env
 from dotenv import load_dotenv  # .env
+from gpiozero import DigitalInputDevice # IR sensor
 
 # ==============================================================================
 # Helper Functions
+
+def get_rpm() -> int:
+    # Time since measurement attempt started
+    # Used exclusively for timeout checking
+    function_ts = time.time_ns()
+
+    def has_timeout() -> bool:
+        return (time.time_ns() - function_ts) > (TIMEOUT * NANO_TO_SECONDS)
+
+    def block_until_rising_edge() -> bool:
+        while ir_sensor.is_active:
+            if has_timeout(): return False
+        while not ir_sensor.is_active:
+            if has_timeout(): return False
+        return True
+
+
+    # Calculate rpm by measuring start and end rotation timestamps
+    if not block_until_rising_edge():
+        return 0  # Timeout
+    start_ts = time.time_ns()
+    time.sleep(0.001) # PREVENTS EXTREMELY HUGE NUMBERS
+    if not block_until_rising_edge():
+        return 0 # Timeout
+    end_ts = time.time_ns()
+    elapsed_ns = end_ts - start_ts
+    rpm = NANO_TO_SECONDS / (elapsed_ns) * 60
+    print("=========================================================")
+    print(f"Elapsed Nanoseconds: {elapsed_ns}")
+
+    # Raise error if rpm exceeds limit (aka IR reading bounced back)
+    if rpm > RPM_LIMIT:
+        raise Exception(f"\nRPM limit of {RPM_LIMIT} exceeded: {rpm}")
+
+    return int(rpm)
+
 def insert_db(rpm):
+    # Declare which wind tunnel table to insert into (depends on .env file)
+    is_closed = os.getenv("DB_TABLE") == "closed"
+    if is_closed:
+        TABLE_NAME = "closed_tachometer"
+    else:
+        TABLE_NAME = "open_tachometer"
+
     # Insert reading into SQL Database
-    sql_insert = "INSERT INTO motor_rpm (rpm, status) VALUES (%s, %s)"
+    sql_insert = psycopg2.sql.SQL("INSERT INTO {table} (rpm, status) VALUES (%s, %s)").format(
+        table=psycopg2.sql.Identifier(TABLE_NAME)
+    )
 
     if rpm > 0:
         status = 'Running'
     else:
         status = 'Off'
 
-    print(f"Inserting {rpm} into table...")
+    print(f"Inserting rpm: {rpm} into table: {TABLE_NAME}...")
     cursor.execute(sql_insert, (rpm, status)) # execute insert command
     connection.commit() # save changes to database
 
@@ -50,9 +97,19 @@ except Exception as error:
     sys.exit(1)  # stop the program, error code 1
 
 # ==============================================================================
+# Setup IR Sensor
+IR_PIN = 17
+NANO_TO_SECONDS = 1000000000
+RPM_LIMIT = 2500
+TIMEOUT = 5
+
+# TODO: Send error when this pin is not receiving anything
+ir_sensor = DigitalInputDevice(IR_PIN, pull_up=True, bounce_time=0.005)
+
+# ==============================================================================
 # Main Loop 
 
-INSERT_DELAY = 0.2      # seconds to delay inserts 
+INSERT_DELAY = 1      # seconds to delay inserts
 last_insert_ts = 0      # last insert timestamp
 last_rpm = 0
 

@@ -1,35 +1,59 @@
-# Insert temperature, pressure, and altitude into database
-# Table Name: thermometer
-# Table Columns: id, timestamp, temp_celsius, temp_fahrenheit, pressure_hpa, altitude
+# barometer.py
+# Run this file on the raspberry pi named windtunnel
+# Web scrape pressure off of the UMN Mechanical Engineering Pressure Page https://www.enet.umn.edu/auto-generated/pressure/
+# Insert that pressure into barometer table in windtunnel database
 
 import psycopg2                 # PostgreSQL
+from psycopg2 import sql        # PostgreSQL
 import time                     # sleep
 import sys                      # exit early
 import os                       # .env
 from dotenv import load_dotenv  # .env
-import board                    # thermometer
-import busio                    # thermometer
-from adafruit_bmp5xx import BMP5XX  # thermometer
+import re                       # scraper
+import requests                 # scraper
+from bs4 import BeautifulSoup   # scraper
 
 # ==============================================================================
 # Helper Functions
 
-def insert_db():
-    # Gather thermometer readings at time of insert
-    if bmp.data_ready:
-        temp_c = bmp.temperature
-        temp_f = temp_c * 1.8 + 32
-        pressure = bmp.pressure
-        altitude = bmp.altitude
+def scrape():
+    # Scrape html off UMN enet pressure page
+    url = 'https://www.enet.umn.edu/auto-generated/pressure/'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    text = soup.get_text()
+
+    # print the entire document, for debugging
+    # print(soup.prettify())
+
+    # Use regex to find pressure nested in that scraped html
+    pattern = r"is\s+([\d.]+)\s+millibar\."
+    pressure = re.search(pattern, text)
+    if pressure:
+        pressure_mb = float(pressure.group(1))
+        pressure_hpa = pressure_mb
+        return pressure_hpa
     else:
-        # end insert early if data is not ready
-        return
+        raise Exception('No pressure found')
+
+def insert_db():
+    # Gather pressure data from website
+    pressure_hpa = scrape()
+
+    # Declare which wind tunnel table to insert into (depends on .env file)
+    is_closed = os.getenv("DB_TABLE") == "closed"
+    if is_closed:
+        TABLE_NAME = "closed_barometer"
+    else:
+        TABLE_NAME = "open_barometer"
 
     # Insert reading into SQL Database
-    sql_insert = "INSERT INTO thermometer (temp_celsius, temp_fahrenheit, pressure_hpa, altitude_m) VALUES (%s, %s, %s, %s)"
+    sql_insert = psycopg2.sql.SQL("INSERT INTO {table} (pressure_hpa) VALUES (%s)").format(
+        table=psycopg2.sql.Identifier(TABLE_NAME)
+    )
 
-    print(f"Inserting thermometer readings into table...")
-    cursor.execute(sql_insert, (temp_c, temp_f, pressure, altitude)) # execute insert command
+    print(f"Inserting pressure: {pressure_hpa} hpa into table: {TABLE_NAME}...")
+    cursor.execute(sql_insert, (pressure_hpa,)) # execute insert command
     connection.commit() # save changes to database
 
 # ==============================================================================
@@ -57,25 +81,16 @@ except Exception as error:
     sys.exit(1)  # stop the program, error code 1
 
 # ==============================================================================
-# Setup thermometer
-
-# Initialize I2C bus
-i2c = busio.I2C(board.SCL, board.SDA)
-# Initialize the BMP581 sensor
-bmp = BMP5XX.over_i2c(i2c)
-# Set your local sea-level pressure in hPa for accurate altitude readings
-bmp.sea_level_pressure = 1013.25
-
-# ==============================================================================
 # Main Loop
 
 try:
     while True:
         try:
             insert_db()
-            time.sleep(0.2)
+            time.sleep(1)
         except Exception as error:
             print("Error while reading from sensor or inserting to database: ", error)
+            time.sleep(2)
             connection.rollback()
 
 except KeyboardInterrupt:

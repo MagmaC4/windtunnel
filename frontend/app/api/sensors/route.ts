@@ -20,7 +20,7 @@ export async function GET() {
     // latest rpm query
     try {
         const result = await pool.query(
-            'SELECT rpm as latest FROM motor_rpm ORDER BY timestamp DESC LIMIT 1'
+            'SELECT rpm as latest FROM closed_tachometer ORDER BY timestamp DESC LIMIT 1'
         );
         data.rpm = result.rows[0].latest;
     }
@@ -32,7 +32,7 @@ export async function GET() {
     // latest air speed query
     try {
         const result = await pool.query(
-            'SELECT air_speed as latest FROM pitot ORDER BY timestamp DESC LIMIT 1'
+            'SELECT air_speed as latest FROM closed_pitot_static ORDER BY timestamp DESC LIMIT 1'
         );
         data.airSpeed = result.rows[0].latest;
     }
@@ -43,7 +43,7 @@ export async function GET() {
     // latest temperature query
     try {
         const result = await pool.query(
-            'SELECT temp_celsius, pressure_hpa FROM thermometer ORDER BY timestamp DESC LIMIT 1'
+            'SELECT temp_celsius, pressure_hpa FROM closed_thermometer ORDER BY timestamp DESC LIMIT 1'
         );
         data.temp = result.rows[0].temp_celsius;
         data.pressure = result.rows[0].pressure_hpa / 10000;
@@ -52,6 +52,16 @@ export async function GET() {
         console.error('Failed to fetch latest temperature:', error);
     }
 
+    // latest pressure query
+        try {
+            const result = await pool.query(
+                'SELECT pressure_hpa FROM closed_barometer ORDER BY timestamp DESC LIMIT 1'
+            );
+            data.pressure = result.rows[0].pressure_hpa / 10000;
+        }
+        catch (error) {
+            console.error('Failed to fetch latest temperature:', error);
+        }
 
 
 
