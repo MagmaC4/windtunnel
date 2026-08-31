@@ -1,40 +1,39 @@
 @import "tailwindcss";
 
-/* LIGHT MODE */
-:root {
+:root[data-theme="light"] {
   --background: var(--color-neutral-100);
   --foreground: var(--color-neutral-600);
   --title: var(--color-gray-500);
   --card: #ffffff;
   --footer: var(--color-neutral-200);
   --footer-border: var(--color-neutral-300);
-
 }
 
-/* DARK MODE */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #171717;
-    --foreground: #ededed;
-    --card: var(--color-neutral-800);
-    --footer: var(--color-neutral-950);
-    --footer-border: var(--color-black);
-  }
+:root[data-theme="dark"] {
+  --background: #171717;
+  --foreground: #ededed;
+  --card: var(--color-neutral-800);
+  --footer: var(--color-neutral-950);
+  --footer-border: var(--color-black);
 }
 
 /* UMN COLORS */
+:root[data-theme="umn"] {
+  --background: #7a0019; /* maroon */
+  --foreground: #ffcc33; /* gold */
+  --title: #ffcc33;
+  --card: #5c0016;
+  --footer: #4d0013;
+  --footer-border: #ffcc33;
+}
 
-@theme inline {
+@theme {
+  --color-card: var(--card);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-card: var(--card);
-  --color-title: var(--title);
   --color-footer: var(--footer);
   --color-footer-border: var(--footer-border);
 }
-
 
 body {
   background: var(--background);

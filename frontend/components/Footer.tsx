@@ -2,6 +2,7 @@
 // Put links to other pages here
 
 import Link from 'next/link';
+import ThemeSwitcher from './ThemeSwitcher';
 
 export default function Footer(){
     
@@ -26,6 +27,7 @@ export default function Footer(){
                         Contact
                     </Link>
                 </nav>
+                <ThemeSwitcher/>
             </div>
         </footer>
     )

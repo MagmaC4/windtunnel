@@ -1,11 +1,13 @@
+// layout.tsx
+// Layout applies to all pages, useful for consistent components across website
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from 'next-themes'
+// components
 import Footer from '@/components/Footer';
 import MaintenanceHeader from '@/components/MaintenanceHeader';
-
-// Layout applies to all pages
-// Useful for consistency
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +21,7 @@ const geistMono = Geist_Mono({
 
 // Set metadata for webpage for SEO
 export const metadata: Metadata = {
-  title: "Wind Tunnel | UMN",
+  title: "Wind Tunnel @ UMN",
   description: "Digital Twin for the Wind Tunnel located in the University of Minnesota AEM Department",
 };
 
@@ -37,18 +39,30 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
           <body className="min-h-screen flex flex-col">
-            <MaintenanceHeader/> {/* Display Maintenance Notification */}
+            <ThemeProvider
+              attribute="data-theme"
+              themes={['light', 'dark', 'umn']}
+              defaultTheme="system"
+              enableSystem
+            >
 
-            {/* debug class name makes a red outline for all elements*/}
-            <div className={debugClassName}>{
-                <main className="flex-1">
-                    {children}
-                </main>
-            }</div>
 
-            <Footer/> {/* Navigation Bar */}
+                <MaintenanceHeader/> {/* Display Maintenance Notification */}
+
+                {/* debug class name makes a red outline for all elements*/}
+                <div className={debugClassName}>{
+                    <main className="flex-1">
+                        {children}
+                    </main>
+                }</div>
+
+                <Footer/> {/* Navigation Bar */}
+
+
+             </ThemeProvider>
           </body>
     </html>
 
