@@ -9,6 +9,7 @@ import {useState} from "react";
 type Unit = {
   label: string;
   convert: (value: number) => number;
+  decimalPlaces: number;
 };
 
 type GaugeCardProps = {
@@ -18,7 +19,7 @@ type GaugeCardProps = {
     units?: Unit[]; // some metrics do not have units (RPM)
 }
 
-export default function GaugeCard({ title, value, ts, decimalPlaces, units}: GaugeCardProps) {
+export default function GaugeCard({ title, value, ts, units}: GaugeCardProps) {
     // calculate value based on selected unit
     const [unitIndex, setUnitIndex] = useState(0);
     const activeUnit = units?.[unitIndex];

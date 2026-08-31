@@ -2,9 +2,13 @@ import pool from "@/lib/db";
 
 interface SensorData {
   rpm: number;
+  rpm_ts: string;
   airSpeed: number;
+  airSpeed_ts: string;
   temp: number;
+  temp_ts: string;
   pressure: number;
+  pressure_ts: string;
 }
 
 export async function GET() {
@@ -12,13 +16,13 @@ export async function GET() {
     // return zeros as placeholder api call
     var data : SensorData = {
         rpm: 0,
-        rpm_ts: null,
+        rpm_ts: "",
         airSpeed: 0,
-        airSpeed_ts: null,
+        airSpeed_ts: "",
         temp: 0,
-        temp_ts: null,
+        temp_ts: "",
         pressure: 0,
-        pressure_ts: null,
+        pressure_ts: "",
     }
 
     // latest rpm query
