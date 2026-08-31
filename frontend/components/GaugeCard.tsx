@@ -36,7 +36,7 @@ export default function GaugeCard({ title, value, decimalPlaces, units}: GaugeCa
                         )
                     }
                 </div>
-                {/* Value Display */}
+                {/* Value Display and Info Hover*/}
                 <p className="text-5xl text-center lg:text-left text-foreground md:text-7xl font-bold">
                     {/* if value is a decimal then truncate it */}
                     {displayValue % 1 == 0 ? displayValue : displayValue.toFixed(decimalPlaces)}
