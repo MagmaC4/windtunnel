@@ -39,6 +39,7 @@ export default function InfoTooltip({ts} : InfoTooltipProps){
     }
 
     useEffect(() => {
+        changeColor();
         const interval = setInterval(changeColor, 1000);
         return () => clearInterval(interval);
     }, [ts]);

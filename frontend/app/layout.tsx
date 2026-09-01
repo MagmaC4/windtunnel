@@ -46,7 +46,7 @@ export default function RootLayout({
             <ThemeProvider
               attribute="data-theme"
               themes={['light', 'dark', 'umn']}
-              defaultTheme="dark"
+              defaultTheme="umn"
               enableSystem
             >
 

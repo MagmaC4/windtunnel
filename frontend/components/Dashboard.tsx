@@ -36,7 +36,7 @@ export default function Dashboard() {
 return (
     // display Dashboard as grid of cards
 
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
         <DashboardHeader/>
 
         <div className="grid grid-cols-2 gap-4 p-4">
