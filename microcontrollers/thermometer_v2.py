@@ -20,7 +20,7 @@ while True:
     scaled_value = (raw_value / 65535) * pcf_in_0.reference_voltage
 
     # Calculate temperature
-    temperature = 0.1 * scaled_value + 0.028
+    temperature = 9.86 * scaled_value + 0.0497
 
     # Display
     print(f"Temperature: {temperature}, voltage: {scaled_value:.2f}V")
