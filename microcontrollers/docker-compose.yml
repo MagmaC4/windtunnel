@@ -42,6 +42,16 @@ services:
     command: python3 thermometer.py
     profiles: ["windtunnel-2"]
 
+  thermometer-2:
+    build: .
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
+    privileged: true
+    restart: unless-stopped
+    command: python3 thermometer-2.py
+
   standby:
     build: .
     environment:

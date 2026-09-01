@@ -11,7 +11,7 @@ i2c = board.I2C()
 pcf = PCF.PCF8591(i2c)
 
 # define analog channels
-pcf_in_0 = AnalogIn(pcf, PCF.A1)
+pcf_in_0 = AnalogIn(pcf, PCF.A2)
 
 
 while True:
