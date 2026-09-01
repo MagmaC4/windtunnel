@@ -6,6 +6,8 @@ import ThemeSwitcher from './ThemeSwitcher';
 import { TbArrowsRight } from "react-icons/tb";
 import { TbChartArrows } from "react-icons/tb";
 import { MdContactEmergency } from "react-icons/md";
+import { FaExternalLinkAlt } from "react-icons/fa";
+
 
 export default function Footer(){
     
@@ -31,6 +33,12 @@ export default function Footer(){
                     </Link>
                 </nav>
                 <ThemeSwitcher/>
+
+                {/* footer department text */}
+                <div className="">
+                    <span className="text-sm"> 430 Akerman Hall, 110 Union St SE, Minneapolis, MN 55455 </span>
+                    <a className="flex gap-2 items-center" href={"https://cse.umn.edu/aem"}> Department of Aerospace Engineering and Mechanics <FaExternalLinkAlt /> </a>
+                </div>
             </div>
         </footer>
     )

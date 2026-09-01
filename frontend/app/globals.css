@@ -44,17 +44,17 @@
   --foreground: var(--color-neutral-600);
   --title: var(--color-gray-500);
   --card: #ffffff;
-  --gauge-start: #E17100;
-  --gauge-stop: #fe9a00;
-  --primary: var(--color-amber-500);
-  --button: var(--color-amber-500);
-  --button-selected: var(--color-amber-600);
-  --button-unit: var(--color-red-900);
-  --header: var(--color-red-950);
-  --header-text: var(--color-amber-500);
+  --gauge-start: #ffb71e;
+  --gauge-stop: #ffcc33;
+  --primary: #ffcc33;
+  --button: #ffcc33;
+  --button-selected: #ffb71e;
+  --button-unit: #900021;
+  --header: #7a0019;
+  --header-text: #ffcc33;
   --header-border: var(--color-mauve-950);
-  --footer: var(--color-red-950);
-  --footer-text: var(--color-amber-500);
+  --footer: #7a0019;
+  --footer-text: #ffcc33;
   --footer-border: var(--color-mauve-950);
 }
 
