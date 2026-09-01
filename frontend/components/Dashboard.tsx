@@ -39,7 +39,7 @@ return (
     <div className="min-h-screen">
         <DashboardHeader/>
 
-        <div className="grid grid-cols-2 gap-4 p-4 w-full h-full">
+        <div className="grid grid-cols-2 gap-4 p-4">
             {/* Wind Tunnel Running Status */}
             <Card className="col-span-2 lg:col-span-1"><StatusBox /></Card>
 

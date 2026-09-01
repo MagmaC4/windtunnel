@@ -44,7 +44,7 @@ export default function GaugeCard({ title, value, ts, units}: GaugeCardProps) {
                 {/* Value Display and Info Hover*/}
                 <div className="flex flex-row gap-2">
                     {/* Value */}
-                    <p className="text-4xl text-center lg:text-left text-foreground md:text-6xl font-bold">
+                    <p className="text-4xl text-center lg:text-left text-foreground md:text-6xl 4xl:text-9xl font-bold">
                         {/* if value is a decimal then truncate it */}
                         {displayValue % 1 == 0 ? displayValue : displayValue.toFixed(decimals)}
                     </p>
