@@ -13,7 +13,7 @@ export default function Footer(){
     return (
         <footer className="border-t bg-footer border-footer-border text-footer-text text-sm py-8 mt-auto transition-colors">
             <div className="max-w-5xl mx-auto px-4 flex flex-col items-center gap-4">
-                <nav className="flex flex-wrap justify-center gap-6">
+                <nav className="flex flex-wrap justify-center gap-2 md:gap-6">
                     <Link href="/dashboard/open-return" className="flex items-center gap-2 hover:text-footer-text/60 transition-colors">
                         <TbArrowsRight /> Open Return
                     </Link>

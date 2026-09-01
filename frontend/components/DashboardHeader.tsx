@@ -12,7 +12,7 @@ export default function DashboardHeader(){
 
     return(
         <div className="bg-header border-header-border border-b-1 p-4">
-            <p className="flex justify-center gap-4 font-bold text-header-text text-2xl md:text-4xl">
+            <p className="flex justify-center items-center gap-4 font-bold text-header-text text-[clamp(1rem,4vw,2.25rem)]">
                 <FaWind />
                 <span className="truncate"> {name} Return Wind Tunnel Dashboard </span>
                 <FaWind className="scale-x-[-1]" />
