@@ -33,6 +33,7 @@ export default function RootLayout({
 }>) {
 
   const debug = false;
+  const maintenance = false;
   const debugClassName = debug ? "[&_*]:outline [&_*]:outline-1 [&_*]:outline-red-500/50" : "";
 
   return (
@@ -45,12 +46,12 @@ export default function RootLayout({
             <ThemeProvider
               attribute="data-theme"
               themes={['light', 'dark', 'umn']}
-              defaultTheme="system"
+              defaultTheme="dark"
               enableSystem
             >
 
 
-                <MaintenanceHeader/> {/* Display Maintenance Notification */}
+                {maintenance && <MaintenanceHeader/>} {/* Display Maintenance Notification */}
 
                 {/* debug class name makes a red outline for all elements*/}
                 <div className={debugClassName}>{

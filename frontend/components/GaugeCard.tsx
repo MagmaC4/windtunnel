@@ -37,7 +37,7 @@ export default function GaugeCard({ title, value, ts, units}: GaugeCardProps) {
                     {units && activeUnit &&
                         (<Button label={activeUnit.label}
                             onClick={() => setUnitIndex((i) => (i + 1) % units.length)}
-                            className="min-w-20 max-w-20 bg-zinc-700 border border-zinc-500 px-1 "/>
+                            className="min-w-20 max-w-20 bg-button-unit/90 border border-button-unit border-2 px-1 "/>
                         )
                     }
                 </div>

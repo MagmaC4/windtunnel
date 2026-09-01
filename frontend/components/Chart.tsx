@@ -131,7 +131,7 @@ export default function Chart({selectedRange, selectedMetric} : ChartProps) {
           <Line
             type="linear"
             dataKey="value"
-            stroke="#818cf8"
+            stroke="var(--primary)"
             strokeWidth={3}
             dot={false}
             activeDot={{ stroke: '#fff' }}

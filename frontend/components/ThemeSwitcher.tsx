@@ -15,23 +15,23 @@ export default function ThemeSwitcher() {
   return (
     <div className="flex items-center gap-2">
 
-      <FaPalette className=""/>
+      <FaPalette/>
 
       <button
         onClick={() => setTheme('light')}
-        className={theme === 'light' ? 'font-bold' : ''}
+        className={`hover:text-footer-text/60 hover:cursor-pointer transition-colors ${theme === 'light' ? 'font-bold' : ''}`}
       >
         Light
       </button>
       <button
         onClick={() => setTheme('dark')}
-        className={theme === 'dark' ? 'font-bold' : ''}
+        className={`hover:text-footer-text/60 hover:cursor-pointer transition-colors ${theme === 'dark' ? 'font-bold' : ''}`}
       >
         Dark
       </button>
       <button
         onClick={() => setTheme('umn')}
-        className={theme === 'umn' ? 'font-bold' : ''}
+        className={`hover:text-footer-text/60 hover:cursor-pointer transition-colors ${theme === 'umn' ? 'font-bold' : ''}`}
       >
         UMN
       </button>

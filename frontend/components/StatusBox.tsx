@@ -51,14 +51,14 @@ export default function StatusBox(){
             setTextColor("text-amber-500")
         }
         else if (status == "Off"){
-            setTextColor("text-[#818cf8]")
+            setTextColor("text-primary")
         }
     }, [status])
 
 
     return (
         <div>
-            <p className="text-2xl dark:text-gray-500"> Wind Tunnel Status </p>
+            <p className="text-2xl text-title"> Wind Tunnel Status </p>
             <p className={`text-6xl md:text-8xl font-bold ${textColor}`}> {status} </p>
         </div>
 

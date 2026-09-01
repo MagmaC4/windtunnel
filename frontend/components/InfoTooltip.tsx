@@ -27,8 +27,8 @@ export default function InfoTooltip({ts} : InfoTooltipProps){
     const [infoColor, setInfoColor] = useState(COLORS.normal);
     const [infoHoverColor, setInfoHoverColor] = useState(COLORS.normal_hover);
 
-    useEffect(() => {
-        if (isOutdated(ts)){
+    function changeColor(){
+        if (checkOutdated(ts)){
             setInfoColor(COLORS.outdated);
             setInfoHoverColor(COLORS.outdated_hover);
         }
@@ -36,8 +36,11 @@ export default function InfoTooltip({ts} : InfoTooltipProps){
             setInfoColor(COLORS.normal);
             setInfoHoverColor(COLORS.normal_hover);
         }
+    }
 
-
+    useEffect(() => {
+        const interval = setInterval(changeColor, 1000);
+        return () => clearInterval(interval);
     }, [ts]);
 
     {/* Calculate how old the timestamp is in readable time */}
@@ -54,10 +57,10 @@ export default function InfoTooltip({ts} : InfoTooltipProps){
         return `${days}d ago`;
     }
 
-    function isOutdated(timestamp: string) : boolean {
+    function checkOutdated(timestamp: string) : boolean {
         const diffMs = Date.now() - new Date(timestamp).getTime();
         const seconds = Math.floor(diffMs / 1000);
-        return (seconds > 10 || Number.isNaN(diffMs)) ? true : false;
+        return(seconds > 10);
     }
 
     return(

@@ -5,33 +5,76 @@
   --foreground: var(--color-neutral-600);
   --title: var(--color-gray-500);
   --card: #ffffff;
+  --gauge-start: #C0C0DB;
+  --gauge-stop: #C0C0DB;
+  --primary: var(--color-indigo-400);
+  --button: var(--color-indigo-400);
+  --button-selected: var(--color-indigo-500);
+  --button-unit: var(--color-neutral-600);
+  --header: var(--color-neutral-200);
+  --header-text: var(--color-neutral-600);
+  --header-border: var(--color-neutral-300);
   --footer: var(--color-neutral-200);
+  --footer-text: var(--color-zinc-400);
   --footer-border: var(--color-neutral-300);
 }
 
 :root[data-theme="dark"] {
-  --background: #171717;
-  --foreground: #ededed;
+  --background: var(--color-neutral-900);
+  --foreground: var(--color-neutral-100);
+  --title: var(--color-gray-500);
   --card: var(--color-neutral-800);
+  --gauge-start: #6F6EA0;
+  --gauge-stop: #C0C0DB;
+  --primary: var(--color-indigo-400);
+  --button: var(--color-indigo-400);
+  --button-selected: var(--color-indigo-500);
+  --button-unit: var(--color-zinc-700);
+  --header: var(--color-neutral-950);
+  --header-text: var(--color-zinc-400);
+  --header-border: var(--color-neutral-800);
   --footer: var(--color-neutral-950);
-  --footer-border: var(--color-black);
+  --footer-text: var(--color-zinc-400);
+  --footer-border: var(--color-neutral-800);
 }
 
 /* UMN COLORS */
 :root[data-theme="umn"] {
-  --background: #7a0019; /* maroon */
-  --foreground: #ffcc33; /* gold */
-  --title: #ffcc33;
-  --card: #5c0016;
-  --footer: #4d0013;
-  --footer-border: #ffcc33;
+  --background: var(--color-neutral-100);
+  --foreground: var(--color-neutral-600);
+  --title: var(--color-gray-500);
+  --card: #ffffff;
+  --gauge-start: #E17100;
+  --gauge-stop: #fe9a00;
+  --primary: var(--color-amber-500);
+  --button: var(--color-amber-500);
+  --button-selected: var(--color-amber-600);
+  --button-unit: var(--color-red-900);
+  --header: var(--color-red-950);
+  --header-text: var(--color-amber-500);
+  --header-border: var(--color-mauve-950);
+  --footer: var(--color-red-950);
+  --footer-text: var(--color-amber-500);
+  --footer-border: var(--color-mauve-950);
 }
 
 @theme {
-  --color-card: var(--card);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-title: var(--title);
+  --color-card: var(--card);
+  --color-gauge-start: var(--gauge-start);
+  --color-gauge-stop: var(--gauge-stop);
+  --color-primary: var(--primary);
+  --color-button: var(--button);
+  --color-button-selected: var(--button-selected);
+  --color-button-unit: var(--button-unit);
+  --color-header: var(--header);
+  --color-header-text: var(--header-text);
+  --color-header-border: var(--header-border);
   --color-footer: var(--footer);
+  --color-footer-text: var(--footer-text);
+  --color-footer-text-hover: var(--footer-text-hover);
   --color-footer-border: var(--footer-border);
 }
 
