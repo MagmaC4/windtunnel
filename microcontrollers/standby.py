@@ -19,11 +19,12 @@ while True:
     raw_value = pcf_in_0.value
     scaled_value = (raw_value / 65535) * pcf_in_0.reference_voltage
 
-    # Calculate temperature
-    temperature = 0.1 * scaled_value + 0.028
-
-    # Display
-    print(f"Temperature: {temperature}, voltage: {scaled_value:.2f}V")
+    # ON / OFF Determination
+    windTunnelOn = (scaled_value > 0.1)
+    if windTunnelOn:
+        print(f"Tunnel is on, voltage: {scaled_value:.2f}V")
+    else:
+        print(f"Tunnel is off, voltage: {scaled_value:.2f}V")
 
     time.sleep(0.5)
 
