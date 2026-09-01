@@ -3,7 +3,7 @@
 
 import Button from "@/components/Button";
 
-const TIME_RANGES = ["LIVE", "1H", "1D", "1W", "1MO", "6MO", "1Y"];
+const TIME_RANGES = ["LIVE", "1H", "6H", "1D", "1W", "1MO", "6MO", "1Y"];
 const METRICS = ["RPM", "Air Speed", "Temp", "Pressure"]
 
 type ChartButtonsProps = {
@@ -22,7 +22,7 @@ export default function ChartButtons({selectedRange, selectedMetric, onRangeSele
                 {METRICS.map(r => (
                     <Button key={r} label={r} onClick={() => onMetricSelect(r)}
                         /* Change button appearance for selected range */
-                        className={selectedMetric === r ? "bg-indigo-500" : "bg-indigo-400"}
+                        className={selectedMetric === r ? "bg-button-selected" : "bg-button"}
                     />
                 ))}
             </div>
@@ -31,7 +31,7 @@ export default function ChartButtons({selectedRange, selectedMetric, onRangeSele
                 {TIME_RANGES.map(r => (
                     <Button key={r} label={r} onClick={() => onRangeSelect(r)}
                         /* Change button appearance for selected range */
-                        className={selectedRange === r ? "bg-indigo-500" : "bg-indigo-400"}
+                        className={selectedRange === r ? "bg-button-selected" : "bg-button"}
                     />
                 ))}
             </div>

@@ -3,6 +3,7 @@
 "use client"; // gauge requires browser, so use client here
 
 import { useEffect, useRef, useState } from "react";
+import { useTheme } from 'next-themes'
 
 type Unit = {
   label: string;
@@ -92,6 +93,11 @@ function getUnitConfig(label?: string): GaugeUnitConfig {
   return UNIT_CONFIG[label ?? "default"] ?? UNIT_CONFIG["default"];
 }
 
+// Find the css color from theme variables
+function getCSSVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
+}
+
 // Static visual options that never change (angle, colors, ticks, etc).
 function buildGaugeOptions(labels: number[], fractionDigits : number, divisions : number[]) {
   return {
@@ -112,8 +118,8 @@ function buildGaugeOptions(labels: number[], fractionDigits : number, divisions 
     },
     limitMax: false,
     limitMin: false,
-    colorStart: "#6F6EA0",
-    colorStop: "#C0C0DB",
+    colorStart: getCSSVar('--gauge-start'),
+    colorStop: getCSSVar('--gauge-stop'),
     strokeColor: "#EEEEEE",
     generateGradient: true,
     highDpiSupport: true,
@@ -135,26 +141,29 @@ const DEFAULT_ANIMATION_SPEED = 32;
 export default function Gauge({ value, activeUnit }: GaugeProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const gaugeRef = useRef<any>(null);
+  const { theme, resolvedTheme } = useTheme();
 
   // ===================================================================
   // Create Gauge on mount
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    import("gaugeJS").then(({ Gauge }) => {
-      if (!canvasRef.current) return;
+    const raf = requestAnimationFrame(() => {
+        import("gaugeJS").then(({ Gauge }) => {
+          if (!canvasRef.current) return;
 
-      const { min, max, labels, divisions, fractionDigits } = getUnitConfig(activeUnit?.label);
+          const { min, max, labels, divisions, fractionDigits } = getUnitConfig(activeUnit?.label);
 
-      const gauge = new Gauge(canvasRef.current).setOptions(buildGaugeOptions(labels, fractionDigits, divisions));
-      gauge.setMinValue(min);
-      gauge.maxValue = max;
-      gauge.animationSpeed = DEFAULT_ANIMATION_SPEED;
-      gauge.set(min); // start at the current value, no 0-sweep on first paint
+          const gauge = new Gauge(canvasRef.current).setOptions(buildGaugeOptions(labels, fractionDigits, divisions));
+          gauge.setMinValue(min);
+          gauge.maxValue = max;
+          gauge.animationSpeed = DEFAULT_ANIMATION_SPEED;
+          gauge.set(min); // start at the current value, no 0-sweep on first paint
 
-      gaugeRef.current = gauge;
+          gaugeRef.current = gauge;
 
-      console.log("created gauge with value: " + value + " min: " + min + " max: " + max + " labels " + labels);
+          console.log("created gauge with value: " + value + " min: " + min + " max: " + max + " labels " + labels);
+        });
     });
   }, []);
 
@@ -163,24 +172,26 @@ export default function Gauge({ value, activeUnit }: GaugeProps) {
   useEffect(() => {
     if (!gaugeRef.current) return;
 
-    const { min, max, labels, divisions, fractionDigits } = getUnitConfig(activeUnit?.label);
+    const raf = requestAnimationFrame(() => {
+        const { min, max, labels, divisions, fractionDigits } = getUnitConfig(activeUnit?.label);
 
-    const gauge = gaugeRef.current;
-    gauge.setMinValue(min);
-    gauge.maxValue = max;
-    gauge.setOptions(buildGaugeOptions(labels, fractionDigits, divisions)); // resets gauge's internal value to 0
+        const gauge = gaugeRef.current;
+        gauge.setMinValue(min);
+        gauge.maxValue = max;
+        gauge.setOptions(buildGaugeOptions(labels, fractionDigits, divisions)); // resets gauge's internal value to 0
 
-    // Jump straight to the correct value instead of visibly animating 0 -> value.
-    // This prevents a visual bug when editing gauge options on the fly
-    const restoreSpeed = gauge.animationSpeed;
-    gauge.animationSpeed = 1;
-    gauge.set(value === 0 ? 0.0001 : value);
-    requestAnimationFrame(() => {
-      gauge.animationSpeed = restoreSpeed;
+        // Jump straight to the correct value instead of visibly animating 0 -> value.
+        // This prevents a visual bug when editing gauge options on the fly
+        const restoreSpeed = gauge.animationSpeed;
+        gauge.animationSpeed = 1;
+        gauge.set(value === 0 ? 0.0001 : value);
+        requestAnimationFrame(() => {
+          gauge.animationSpeed = restoreSpeed;
+        });
     });
 
     console.log("updated gauge");
-  }, [activeUnit]);
+  }, [activeUnit, theme, resolvedTheme]);
 
   // ===================================================================
   // 3. Update gauge value on value change
