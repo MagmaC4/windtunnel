@@ -50,7 +50,7 @@ services:
       - .env
     privileged: true
     restart: unless-stopped
-    command: python3 thermometer-2.py
+    command: python3 thermometer_v2.py
 
   standby:
     build: .
