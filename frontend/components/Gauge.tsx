@@ -94,7 +94,7 @@ function getUnitConfig(label?: string): GaugeUnitConfig {
 }
 
 // Find the css color from theme variables
-function getCSSVar(name) {
+function getCSSVar(name : string) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 }
 
