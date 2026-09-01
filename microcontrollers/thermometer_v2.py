@@ -22,7 +22,7 @@ from adafruit_pcf8591.analog_out import AnalogOut   # ADC
 # and plotting them to find a polynomial line of best fit
 # Thanks to Dan Reuter for help with this!
 def voltage_to_temperature(scaled_voltage):
-    temperature = 14.7 * scaled_value + 1.02
+    temperature = 14.7 * scaled_voltage + 1.02
     return temperature
 
 def insert_db():
