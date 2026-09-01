@@ -44,7 +44,7 @@ return (
             <Card className="col-span-2 lg:col-span-1"><StatusBox /></Card>
 
             {/* Historical Data Chart */}
-            <Card className="col-span-2 lg:col-span-1 min-h-[375px]"><ChartContainer/></Card>
+            <Card className="col-span-2 lg:col-span-1 min-h-[375px] pb-8"><ChartContainer/></Card>
 
             {/* RPM and Air Speed Gauges */}
             <div className="flex flex-col gap-4">

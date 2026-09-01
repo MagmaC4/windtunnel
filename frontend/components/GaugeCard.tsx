@@ -27,8 +27,8 @@ export default function GaugeCard({ title, value, ts, units}: GaugeCardProps) {
     const displayValue = activeUnit ? activeUnit.convert(value) : value;
 
     return (
-        <Card className="flex-1 flex items-center flex-col lg:flex-row  justify-between">
-            <div>
+        <Card className="flex-1 flex items-center flex-col lg:flex-row justify-between">
+            <div className="flex flex-col items-center lg:items-start">
                 {/* Title and Unit Conversion */}
                 <div className="flex flex-row gap-2">
                     {/* Title */}
@@ -37,14 +37,14 @@ export default function GaugeCard({ title, value, ts, units}: GaugeCardProps) {
                     {units && activeUnit &&
                         (<Button label={activeUnit.label}
                             onClick={() => setUnitIndex((i) => (i + 1) % units.length)}
-                            className="min-w-20 max-w-20 bg-button-unit/90 border border-button-unit border-2 px-1 "/>
+                            className="min-w-20 max-w-20 bg-button-unit/90 hover:bg-button-unit border border-button-unit border-2 px-1 "/>
                         )
                     }
                 </div>
                 {/* Value Display and Info Hover*/}
                 <div className="flex flex-row gap-2">
                     {/* Value */}
-                    <p className="text-5xl text-center lg:text-left text-foreground md:text-7xl font-bold">
+                    <p className="text-4xl text-center lg:text-left text-foreground md:text-6xl font-bold">
                         {/* if value is a decimal then truncate it */}
                         {displayValue % 1 == 0 ? displayValue : displayValue.toFixed(decimals)}
                     </p>
@@ -52,7 +52,9 @@ export default function GaugeCard({ title, value, ts, units}: GaugeCardProps) {
                     <InfoTooltip ts={ts}/>
                 </div>
             </div>
-            <Gauge value={displayValue} activeUnit={activeUnit} />
+            <div className="pt-4 md:pt-0">
+                <Gauge value={displayValue} activeUnit={activeUnit} />
+            </div>
         </Card>
 
     );

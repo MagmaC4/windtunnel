@@ -23,6 +23,13 @@ const MAX_METRIC : Record<string, number> = {
     "Pressure": 1000
 }
 
+const UNIT_METRIC : Record<string, string> = {
+    "RPM": "rpm",
+    "Air Speed": "m/s",
+    "Temp": "C",
+    "Pressure": "hPa",
+}
+
 export default function Chart({selectedRange, selectedMetric} : ChartProps) {
 
     const [chartData, setChartData] = useState([]);
@@ -111,9 +118,15 @@ export default function Chart({selectedRange, selectedMetric} : ChartProps) {
           margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" vertical={false} />
-          <XAxis dataKey="timestamp" stroke="#666" interval={47} tick={false}/>
+          <XAxis label="Time" dataKey="timestamp" stroke="#666" interval={47} tick={false}/>
           <YAxis
-            width={40}
+              label={{
+                  value: selectedMetric + " (" + UNIT_METRIC[selectedMetric] + ")",
+                  angle: -90,
+                  position: 'insideLeft',
+                  textAnchor: 'middle'
+              }}
+              width={80}
             stroke="#666"
             domain={[chartMin, chartMax]}
           />

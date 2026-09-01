@@ -13,7 +13,7 @@ export default function Button({label, onClick, className} : ButtonProps){
     return(
         
         <button onClick={onClick}
-        className={`rounded text-white font-bold w-full hover:cursor-pointer transition-colors duration-200 ${className}`}>
+        className={`rounded text-white w-full hover:cursor-pointer hover:bg-button-selected/90 transition-colors duration-200 ${className}`}>
             {label}
         </button>
         
