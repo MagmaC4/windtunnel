@@ -67,7 +67,7 @@ def insert_db():
         table=psycopg2.sql.Identifier(TABLE_NAME)
     )
 
-    print(f"Inserting air speed: {air_speed} readings into table: {TABLE_NAME}...")
+    print(f"Inserting air speed: {air_speed}, voltage: {scaled_value} readings into table: {TABLE_NAME}...")
     cursor.execute(sql_insert, (scaled_value, air_speed)) # execute insert command
     connection.commit() # save changes to database
 
