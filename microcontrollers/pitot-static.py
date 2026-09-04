@@ -21,15 +21,27 @@ from adafruit_pcf8591.analog_out import AnalogOut   # ADC
 # a, b, and c were found by measuring voltage and air speed,
 # and plotting them to find a polynomial line of best fit
 # Thanks to Dan Reuter for help with this!
-def voltage_to_air_speed(scaled_voltage):
+def voltage_to_air_speed_closed(scaled_voltage):
     a = 2.78 * (10 ** -3)
     b = 1.27 * (10 ** -3)
     c = -7.95 * (10 ** -3) - scaled_voltage
     air_speed = (-b + (b ** 2 - 4 * a * c) ** 0.5) / (2 * a)
+
     # Formula is not entirely accurate: zero out air speed if voltage is low
     min_voltage = 0.02
     if scaled_voltage <= min_voltage:
         air_speed = 0
+
+    return air_speed
+
+def voltage_to_air_speed_open(scaled_voltage):
+    air_speed = 25.8 * (scaled_voltage ** 0.508)
+
+    # Formula is not entirely accurate: zero out air speed if voltage is low
+    min_voltage = 0.02
+    if scaled_voltage <= min_voltage:
+        air_speed = 0
+
     return air_speed
 
 def insert_db():
@@ -37,15 +49,18 @@ def insert_db():
     raw_value = pcf_in_0.value
     scaled_value = (raw_value / 65535) * pcf_in_0.reference_voltage
 
-    # Calculate air speed from analog voltage
-    air_speed = voltage_to_air_speed(scaled_value)
+    # Determine which wind tunnel this sensor is responsible for
+    is_closed = os.getenv("DB_TABLE") == "closed"
 
     # Declare which wind tunnel table to insert into (depends on .env file)
-    is_closed = os.getenv("DB_TABLE") == "closed"
     if is_closed:
+        air_speed = voltage_to_air_speed_closed(scaled_value)
         TABLE_NAME = "closed_pitot_static"
     else:
+        air_speed = voltage_to_air_speed_open(scaled_value)
         TABLE_NAME = "open_pitot_static"
+
+
 
     # Insert air speed into database
     sql_insert = psycopg2.sql.SQL("INSERT INTO {table} (voltage, air_speed) VALUES (%s, %s)").format(
