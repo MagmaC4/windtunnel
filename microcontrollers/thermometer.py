@@ -1,8 +1,7 @@
 # thermometer.py
-# Run this file on the raspberry pi named windtunnel-2
-# Insert temperature, pressure, and altitude into database
-# Table Name: thermometer
-# Table Columns: id, timestamp, temp_celsius, temp_fahrenheit, pressure_hpa, altitude
+# Run this on a raspberry pi with a connected Analog-to-Digital Converter
+# Read closed return Wind Tunnel panel's voltage and convert it to air speed
+# Send air speed (m/s) data to database every 1 second(s)
 
 import psycopg2                 # PostgreSQL
 from psycopg2 import sql        # PostgreSQL
@@ -10,23 +9,29 @@ import time                     # sleep
 import sys                      # exit early
 import os                       # .env
 from dotenv import load_dotenv  # .env
-import board                    # thermometer
-import busio                    # thermometer
-from adafruit_bmp5xx import BMP5XX  # thermometer
+import board                                        # ADC
+import adafruit_pcf8591.pcf8591 as PCF              # ADC
+from adafruit_pcf8591.analog_in import AnalogIn     # ADC
+from adafruit_pcf8591.analog_out import AnalogOut   # ADC
 
 # ==============================================================================
 # Helper Functions
 
+# Use quadratic formula to calculate air speed from wind tunnel panel voltage
+# a, b, and c were found by measuring voltage and air speed,
+# and plotting them to find a polynomial line of best fit
+# Thanks to Dan Reuter for help with this!
+def voltage_to_temperature(scaled_voltage):
+    temperature = 14.7 * scaled_voltage + 1.02
+    return temperature
+
 def insert_db():
-    # Gather thermometer readings at time of insert
-    if bmp.data_ready:
-        temp_c = bmp.temperature
-        temp_f = temp_c * 1.8 + 32
-        pressure = bmp.pressure
-        altitude = bmp.altitude
-    else:
-        # end insert early if data is not ready
-        return
+    # Read in voltage from ADC, reference voltage is likely 5V
+    raw_value = pcf_in_0.value
+    scaled_value = (raw_value / 65535) * pcf_in_0.reference_voltage
+
+    # Calculate air speed from analog voltage
+    temperature = voltage_to_temperature(scaled_value)
 
     # Declare which wind tunnel table to insert into (depends on .env file)
     is_closed = os.getenv("DB_TABLE") == "closed"
@@ -35,14 +40,15 @@ def insert_db():
     else:
         TABLE_NAME = "open_thermometer"
 
-    # Insert reading into SQL Database
-    sql_insert = psycopg2.sql.SQL("INSERT INTO {table} (temp_celsius, temp_fahrenheit) VALUES (%s, %s)").format(
+    # Insert air speed into database
+    sql_insert = psycopg2.sql.SQL("INSERT INTO {table} (voltage, temp_celsius) VALUES (%s, %s)").format(
         table=psycopg2.sql.Identifier(TABLE_NAME)
     )
 
-    print(f"Inserting temperature celsius: {temp_c} readings into table: {TABLE_NAME}...")
-    cursor.execute(sql_insert, (temp_c, temp_f, pressure, altitude)) # execute insert command
+    print(f"Inserting temperature: {temperature} readings into table: {TABLE_NAME}...")
+    cursor.execute(sql_insert, (scaled_value, temperature)) # execute insert command
     connection.commit() # save changes to database
+
 
 # ==============================================================================
 # Setup SQL connection
@@ -69,18 +75,14 @@ except Exception as error:
     sys.exit(1)  # stop the program, error code 1
 
 # ==============================================================================
-# Setup thermometer
+# Setup Analog to Digital Converter
+i2c = board.I2C()
+pcf = PCF.PCF8591(i2c)
+pcf_in_0 = AnalogIn(pcf, PCF.A2) # Use Analog Pin 2 on the Analog to Digital Converter (ADC) chip
 
-# Initialize I2C bus
-i2c = busio.I2C(board.SCL, board.SDA)
-# Initialize the BMP581 sensor
-bmp = BMP5XX.over_i2c(i2c)
-# Set your local sea-level pressure in hPa for accurate altitude readings
-bmp.sea_level_pressure = 1013.25
 
 # ==============================================================================
 # Main Loop
-
 try:
     while True:
         try:
@@ -100,3 +102,5 @@ finally:
     if connection:
         connection.close()
         print("PostgreSQL connection closed")
+
+

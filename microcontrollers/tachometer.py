@@ -1,5 +1,5 @@
 # tachometer.py
-# Run this file on the raspberry pi named windtunnel
+# Run this file on the raspberry pi with a connected IR sensor
 # Insert the windtunnel motor RPM into PostgreSQL database
 # Use IR Sensor to measure RPM
 

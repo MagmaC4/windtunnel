@@ -8,7 +8,7 @@ services:
     privileged: true
     restart: unless-stopped
     command: python3 tachometer.py
-    profiles: ["windtunnel", "windtunnel-3"]
+    profiles: ["windtunnel"]
 
   barometer:
     build: .
@@ -29,7 +29,7 @@ services:
     privileged: true
     restart: unless-stopped
     command: python3 pitot-static.py
-    profiles: ["windtunnel-2"]
+    profiles: ["windtunnel-2", "windtunnel-3"]
 
   thermometer:
     build: .
@@ -40,17 +40,7 @@ services:
     privileged: true
     restart: unless-stopped
     command: python3 thermometer.py
-    profiles: ["windtunnel-2"]
-
-  thermometer-2:
-    build: .
-    environment:
-      - PYTHONUNBUFFERED=1
-    env_file:
-      - .env
-    privileged: true
-    restart: unless-stopped
-    command: python3 thermometer_v2.py
+    profiles: ["windtunnel-2", "windtunnel-3"]
 
   standby:
     build: .

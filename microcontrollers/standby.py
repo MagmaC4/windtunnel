@@ -1,5 +1,5 @@
 # standby.py
-# Run this file on the raspberry pi named windtunnel-2
+# Run this on a raspberry pi with a connected Analog-to-Digital Converter
 
 import time
 import board
