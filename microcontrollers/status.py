@@ -24,7 +24,7 @@ from adafruit_pcf8591.analog_out import AnalogOut   # ADC
 # Helper Functions
 
 # global variables monitoring status
-previous_status = "Off"
+previous_status = "imdifferentsothefirstentryinthedatabaseonrebootisoff"
 current_status = "Off"
 
 # Return the online status of the Wind Tunnel with two factors
