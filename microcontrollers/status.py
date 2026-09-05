@@ -40,7 +40,7 @@ def check_status():
     print(f"Voltage for current reading: {scaled_value}")
 
     # Wind Tunnel ON / OFF Determination
-    is_wind_tunnel_on = (scaled_value > 0.1)
+    is_wind_tunnel_on = (scaled_value > 1)
 
     # Declare which wind tunnel table to insert into (depends on .env file)
     is_closed = os.getenv("DB_TABLE") == "closed"
