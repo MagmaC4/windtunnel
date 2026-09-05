@@ -37,6 +37,7 @@ def check_status():
     # Read voltage from analog channel
     raw_value = pcf_in_0.value
     scaled_value = (raw_value / 65535) * pcf_in_0.reference_voltage
+    print(f"Voltage for current reading: {scaled_value}")
 
     # Wind Tunnel ON / OFF Determination
     is_wind_tunnel_on = (scaled_value > 0.1)
