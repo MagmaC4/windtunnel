@@ -42,7 +42,7 @@ services:
     command: python3 thermometer.py
     profiles: ["windtunnel-2", "windtunnel-3"]
 
-  standby:
+  status:
     build: .
     environment:
       - PYTHONUNBUFFERED=1
@@ -50,5 +50,5 @@ services:
       - .env
     privileged: true
     restart: unless-stopped
-    command: python3 standby.py
-    profiles: [ "windtunnel-2" ]
+    command: python3 status.py
+    profiles: [ "windtunnel-2", "windtunnel-3" ]

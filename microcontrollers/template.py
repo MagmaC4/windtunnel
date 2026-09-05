@@ -18,15 +18,17 @@ def gather_data():
 
 def insert_db():
     data = gather_data()
+
     # Declare which wind tunnel table to insert into (depends on .env file)
     is_closed = os.getenv("DB_TABLE") == "closed"
+    # TODO: Edit table names to reflect database
     if is_closed:
-        TABLE_NAME = "closed_thermometer"
+        TABLE_NAME = "closed_example"
     else:
-        TABLE_NAME = "open_thermometer"
+        TABLE_NAME = "open_example"
 
     # TODO: replace example_column  with actual column name
-    # Insert air speed into database
+    # Insert data into database
     sql_insert = psycopg2.sql.SQL("INSERT INTO {table} (example_column) VALUES (%s)").format(
         table=psycopg2.sql.Identifier(TABLE_NAME)
     )
