@@ -2,6 +2,9 @@ A service file instructs a computer to run terminal commands automatically.
 
 In our case, we want the raspberrypi to run the rpm, thermometer, and barometer sensors on startup.
 
+NOTE: These service files are not required anymore because the docker daemon launches
+all docker compose profiles with a "restart-always" clause.
+
 To enable a service file:
 - copy the service file to /etc/systemd/system
 - enable the service
